@@ -1,3 +1,3 @@
 # MPSH ROV
 ---
-The code for Mount Pearl Senior High's 2018-2019 underwater ROV
+ROV control software for Mount Pearl Senior High's underwater robotics team.
