@@ -40,6 +40,7 @@ class KeyFactory:
     def __init__(self, control):
         self.control = control
         self.rov = control.rov
+        self.urov = self.rov.urov
 
         self.movement_keys = {
             'H_KEYS' : ({
@@ -54,6 +55,10 @@ class KeyFactory:
                 Qt.Key_I : self.rov.go_up,
                 Qt.Key_K : self.rov.go_down,
             }, self.rov.v_stop),
+            'U_KEYS' : ({
+                Qt.Key_PageUp : self.urov.go_forward,
+                Qt.Key_PageDown : self.urov.go_backward,
+            }, self.urov.stop)
         }
         self.toggle_keys = {
             'NUM_KEYS' : {

@@ -3,7 +3,7 @@ import sys
 
 from gui import Ui_MainWindow
 from key_parsing import KeyFactory
-from rov import ROV
+from rov import ROV, uROV
 
 
 def main():

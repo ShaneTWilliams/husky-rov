@@ -4,6 +4,7 @@ class ROV:
 
     def __init__(self, gui):
         self.gui = gui
+        self.urov = uROV(self.gui, self)
         self.set_speed_multiplier(3)
         self.motor_1 = Motor(self, gui.motorSlider_1)
         self.motor_2 = Motor(self, gui.motorSlider_2)
@@ -69,7 +70,25 @@ class ROV:
     def set_speed_multiplier(self, multiplier):
         self.gui.sensitivitySlider.setValue(multiplier)
         self.speed_multiplier = multiplier
+        self.urov.speed_multiplier = multiplier
 
     def shut_down(self):
         self.h_stop()
         self.v_stop()
+
+class uROV:
+
+    def __init__(self, gui, rov):
+        self.gui = gui
+        self.motor = Motor(self, gui.uMotorSlider)
+        self.rov = rov
+        self.speed_multiplier = 3
+
+    def go_forward(self):
+        self.motor.thrust_forward()
+
+    def go_backward(self):
+        self.motor.thrust_backward()
+
+    def stop(self):
+        self.motor.thrust_stop()
