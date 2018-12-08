@@ -68,8 +68,11 @@ class KeyFactory:
                 Qt.Key_4 : self.rov.set_speed_multiplier,
                 Qt.Key_5 : self.rov.set_speed_multiplier
             },
-            'EXIT_KEYS' : {
+            'EXIT_KEY' : {
                 Qt.Key_Escape : self.control.quit_program
+            },
+            'UROV_DEPLOY_KEY' : {
+                Qt.Key_Space : self.rov.toggle_urov_deploy
             }
         }
         self.keys = {}

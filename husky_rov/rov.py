@@ -1,4 +1,6 @@
 from components import Motor
+from PyQt5.QtCore import QTimer
+import random
 
 class ROV:
 
@@ -76,19 +78,38 @@ class ROV:
         self.h_stop()
         self.v_stop()
 
+    def toggle_urov_deploy(self):
+        if self.urov.is_docked:
+            self.urov.motor.slider.setStyleSheet('QSlider::handle:vertical:disabled {background-color: rgb(0, 122, 217);}')
+            self.urov.is_docked = False
+            self.urov.status_indicator.setText('Released')
+            self.urov.status_indicator.setStyleSheet('color:rgb(255,0,0)')
+
+        else:
+            self.urov.motor.slider.setStyleSheet('')
+            self.urov.is_docked = True
+            self.urov.status_indicator.setText('Docked')
+            self.urov.status_indicator.setStyleSheet('color:rgb(0,255,0)')
+
+
 class uROV:
 
     def __init__(self, gui, rov):
         self.gui = gui
-        self.motor = Motor(self, gui.uMotorSlider)
+        self.motor = Motor(self, self.gui.uMotorSlider)
+        self.status_indicator = self.gui.uRovStatus
         self.rov = rov
         self.speed_multiplier = 3
+        self.is_docked = True
 
     def go_forward(self):
-        self.motor.thrust_forward()
+        if not self.is_docked:
+            self.motor.thrust_forward()
 
     def go_backward(self):
-        self.motor.thrust_backward()
+        if not self.is_docked:
+            self.motor.thrust_backward()
 
     def stop(self):
-        self.motor.thrust_stop()
+        if not self.is_docked:
+            self.motor.thrust_stop()
