@@ -111,5 +111,4 @@ class uROV:
             self.motor.thrust_backward()
 
     def stop(self):
-        if not self.is_docked:
-            self.motor.thrust_stop()
+        self.motor.thrust_stop()

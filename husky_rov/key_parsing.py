@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
 
 class Key:
 
@@ -24,6 +25,10 @@ class Key:
         else:
             if self.group == 'NUM_KEYS':
                 self.func(self.num_literals[self.value])
+            elif self.group == 'EXIT_KEY':
+                if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+                    self.func()
+                return
             else:
                 self.func()
 
@@ -39,7 +44,7 @@ class KeyFactory:
 
     def __init__(self, control):
         self.control = control
-        self.rov = control.rov
+        self.rov = self.control.rov
         self.urov = self.rov.urov
 
         self.movement_keys = {
