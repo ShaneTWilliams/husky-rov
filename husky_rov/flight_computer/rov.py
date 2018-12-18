@@ -1,19 +1,39 @@
 from components import Motor
-from PyQt5.QtCore import QTimer
-import random
 
 class ROV:
 
-    def __init__(self, gui):
-        self.gui = gui
-        self.urov = uROV(self.gui, self)
-        self.set_speed_multiplier(3)
-        self.motor_1 = Motor(self, gui.motorSlider_1)
-        self.motor_2 = Motor(self, gui.motorSlider_2)
-        self.motor_3 = Motor(self, gui.motorSlider_3)
-        self.motor_4 = Motor(self, gui.motorSlider_4)
-        self.motor_5 = Motor(self, gui.motorSlider_5)
-        self.motor_6 = Motor(self, gui.motorSlider_6)
+    def __init__(self):
+        self.urov = uROV(self)
+        self.speed_multiplier = 3
+        self.motor_1 = Motor(self)
+        self.motor_2 = Motor(self)
+        self.motor_3 = Motor(self)
+        self.motor_4 = Motor(self)
+        self.motor_5 = Motor(self)
+        self.motor_6 = Motor(self)
+        self.status = {
+            'motor_1_speed' : 1500,
+            'motor_2_speed' : 1500,
+            'motor_3_speed' : 1500,
+            'motor_4_speed' : 1500,
+            'motor_5_speed' : 1500,
+            'motor_6_speed' : 1500,
+            'u_motor_speed' : 1500,
+            'u_rov_deployed' : False,
+            'speed_multiplier' : 3,
+        }
+
+    def update_status(self):
+        self.status['motor_1_speed'] = self.motor_1.speed
+        self.status['motor_2_speed'] = self.motor_2.speed
+        self.status['motor_3_speed'] = self.motor_3.speed
+        self.status['motor_4_speed'] = self.motor_4.speed
+        self.status['motor_5_speed'] = self.motor_5.speed
+        self.status['motor_6_speed'] = self.motor_6.speed
+        self.status['u_motor_speed'] = self.urov.motor.speed
+        self.status['u_rov_deployed'] = self.urov.deployed
+        self.status['speed_multiplier'] = self.speed_multiplier
+        return self.status
 
     def go_forward(self):
         self.motor_1.thrust_forward()
@@ -69,45 +89,34 @@ class ROV:
         self.motor_5.thrust_stop()
         self.motor_6.thrust_stop()
 
-    def set_speed_multiplier(self, multiplier):
-        self.gui.sensitivitySlider.setValue(multiplier)
+    def set_speed_multiplier(self, command):
+        multiplier = command[1]
         self.speed_multiplier = multiplier
-        self.urov.speed_multiplier = multiplier
 
     def shut_down(self):
         self.h_stop()
         self.v_stop()
 
     def toggle_urov_deploy(self):
-        if self.urov.is_docked:
-            self.urov.motor.slider.setStyleSheet('QSlider::handle:vertical:disabled {background-color: rgb(0, 122, 217);}')
-            self.urov.is_docked = False
-            self.urov.status_indicator.setText('Released')
-            self.urov.status_indicator.setStyleSheet('color:rgb(255,0,0)')
-
+        if self.urov.deployed:
+            self.urov.deployed = False
         else:
-            self.urov.motor.slider.setStyleSheet('')
-            self.urov.is_docked = True
-            self.urov.status_indicator.setText('Docked')
-            self.urov.status_indicator.setStyleSheet('color:rgb(0,255,0)')
+            self.urov.deployed = True
 
 
 class uROV:
 
-    def __init__(self, gui, rov):
-        self.gui = gui
-        self.motor = Motor(self, self.gui.uMotorSlider)
-        self.status_indicator = self.gui.uRovStatus
+    def __init__(self, rov):
+        self.motor = Motor(rov)
         self.rov = rov
-        self.speed_multiplier = 3
-        self.is_docked = True
+        self.deployed = False
 
     def go_forward(self):
-        if not self.is_docked:
+        if self.deployed:
             self.motor.thrust_forward()
 
     def go_backward(self):
-        if not self.is_docked:
+        if self.deployed:
             self.motor.thrust_backward()
 
     def stop(self):

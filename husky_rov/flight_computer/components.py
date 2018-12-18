@@ -1,22 +1,23 @@
 class Motor:
 
-    def __init__(self, rov, slider):
+    def __init__(self, rov):
         self.rov = rov
-        self.slider = slider
+        self.forward = 1620
+        self.backward = 1380
+        self.stop = 1500
+        self.speed = self.stop
 
     def update_speeds(self):
         self.forward = 1500 + 40 * self.rov.speed_multiplier
         self.backward = 1500 - 40 * self.rov.speed_multiplier
-        self.stop = 1500
 
     def thrust_forward(self):
         self.update_speeds()
-        self.slider.setValue(self.forward)
+        self.speed = self.forward
 
     def thrust_backward(self):
         self.update_speeds()
-        self.slider.setValue(self.backward)
+        self.speed = self.backward
 
     def thrust_stop(self):
-        self.update_speeds()
-        self.slider.setValue(self.stop)
+        self.speed = self.stop
