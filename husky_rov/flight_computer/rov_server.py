@@ -26,13 +26,17 @@ class ROVServer:
             'U_TOGGLE_DEPLOY' : self.rov.toggle_urov_deploy,
             'H_STOP' : self.rov.h_stop,
             'V_STOP' : self.rov.v_stop,
-            'U_STOP' : self.rov.urov.stop
+            'U_STOP' : self.rov.urov.stop,
+            'SHUTDOWN' : self.rov.shut_down
         }
         while True:
             conn, addr = sock.accept()
             print('Client IP and port: ' + str(addr))
             listener = Thread(target=self.listen, args=(conn,))
             listener.start()
+            status = self.rov.update_status()
+            status = pickle.dumps(status)
+            conn.send(status)
 
     def listen(self, conn):
         while True:

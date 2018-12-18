@@ -96,6 +96,9 @@ class ROV:
     def shut_down(self):
         self.h_stop()
         self.v_stop()
+        self.urov.stop()
+        self.set_speed_multiplier((None, 3))
+        self.urov.deployed = False
 
     def toggle_urov_deploy(self):
         if self.urov.deployed:

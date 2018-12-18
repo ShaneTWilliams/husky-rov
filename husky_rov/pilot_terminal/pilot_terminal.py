@@ -12,7 +12,6 @@ def main():
         sys.exit(app.exec_())
     finally:
         main_control.quit_program()
-        main_control.pilot_client.sock.close( )
 
 class MainControl(QtWidgets.QMainWindow):
 
@@ -21,7 +20,6 @@ class MainControl(QtWidgets.QMainWindow):
         self.gui = Ui_MainWindow()
         self.gui.setupUi(self)
         self.show()
-
         self.client = Client('192.168.2.100', sys.argv[1], self)
         self.key_parser = KeyParser()
 
@@ -44,7 +42,7 @@ class MainControl(QtWidgets.QMainWindow):
             self.gui.uRovStatus.setText('Docked')
             self.gui.uRovStatus.setStyleSheet('color:rgb(0,255,0)')
         self.gui.sensitivitySlider.setValue(rov_status['speed_multiplier'])
-        
+
     def keyPressEvent(self, event):
         key = event.key()
         if not event.isAutoRepeat():
@@ -60,8 +58,9 @@ class MainControl(QtWidgets.QMainWindow):
                 self.client.send(command)
 
     def quit_program(self):
+        self.client.send('SHUTDOWN')
+        self.client.sock.close( )
         sys.exit()
-
 
 if __name__ == '__main__':
     main()
