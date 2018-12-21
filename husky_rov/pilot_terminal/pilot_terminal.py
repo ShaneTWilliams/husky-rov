@@ -1,6 +1,6 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 import sys
-
+import socket
 from gui import Ui_MainWindow
 from key_parsing import KeyParser
 from tcp_client import Client
@@ -45,6 +45,7 @@ class MainControl(QtWidgets.QMainWindow):
 
     def keyPressEvent(self, event):
         key = event.key()
+
         if not event.isAutoRepeat():
             command = self.key_parser.parse_press(key)
             if command:
@@ -58,8 +59,7 @@ class MainControl(QtWidgets.QMainWindow):
                 self.client.send(command)
 
     def quit_program(self):
-        self.client.send('SHUTDOWN')
-        self.client.sock.close( )
+        self.client.sock.shutdown(socket.SHUT_WR)
         sys.exit()
 
 if __name__ == '__main__':

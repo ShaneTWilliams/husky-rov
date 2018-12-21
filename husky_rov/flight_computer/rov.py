@@ -1,3 +1,4 @@
+import pigpio
 from components import Motor
 
 class ROV:
@@ -5,12 +6,13 @@ class ROV:
     def __init__(self):
         self.urov = uROV(self)
         self.speed_multiplier = 3
-        self.motor_1 = Motor(self)
-        self.motor_2 = Motor(self)
-        self.motor_3 = Motor(self)
-        self.motor_4 = Motor(self)
-        self.motor_5 = Motor(self)
-        self.motor_6 = Motor(self)
+        self.rpi = pigpio.pi()
+        self.motor_1 = Motor(self, 5)
+        self.motor_2 = Motor(self, 6)
+        self.motor_3 = Motor(self, 13)
+        self.motor_4 = Motor(self, 19)
+        self.motor_5 = Motor(self, 26)
+        self.motor_6 = Motor(self, 12)
         self.status = {
             'motor_1_speed' : 1500,
             'motor_2_speed' : 1500,
@@ -21,6 +23,24 @@ class ROV:
             'u_motor_speed' : 1500,
             'u_rov_deployed' : False,
             'speed_multiplier' : 3,
+        }
+        self.commands = {
+            'FORWARD' : self.go_forward,
+            'BACKWARD' : self.go_backward,
+            'STRAFE_LEFT' : self.strafe_left,
+            'STRAFE_RIGHT' : self.strafe_right,
+            'SPIN_LEFT' : self.spin_left,
+            'SPIN_RIGHT' : self.spin_right,
+            'UP' : self.go_up,
+            'DOWN' : self.go_down,
+            'U_FORWARD' : self.urov.go_forward,
+            'U_BACKWARD' : self.urov.go_backward,
+            'SET_SPEED_MULTIPLIER' : self.set_speed_multiplier,
+            'U_TOGGLE_DEPLOY' : self.toggle_urov_deploy,
+            'H_STOP' : self.h_stop,
+            'V_STOP' : self.v_stop,
+            'U_STOP' : self.urov.stop,
+            'SHUT_DOWN' : self.shut_down
         }
 
     def update_status(self):
@@ -99,6 +119,14 @@ class ROV:
         self.urov.stop()
         self.set_speed_multiplier((None, 3))
         self.urov.deployed = False
+        self.motor_1.kill_pwm()
+        self.motor_2.kill_pwm()
+        self.motor_3.kill_pwm()
+        self.motor_4.kill_pwm()
+        self.motor_5.kill_pwm()
+        self.motor_6.kill_pwm()
+        self.urov.motor.kill_pwm()
+
 
     def toggle_urov_deploy(self):
         if self.urov.deployed:
@@ -110,7 +138,7 @@ class ROV:
 class uROV:
 
     def __init__(self, rov):
-        self.motor = Motor(rov)
+        self.motor = Motor(rov, 16)
         self.rov = rov
         self.deployed = False
 

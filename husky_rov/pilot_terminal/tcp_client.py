@@ -18,5 +18,7 @@ class Client:
     def listen(self):
         while True:
             rov_status = self.sock.recv(2048)
+            if not rov_status:
+                break
             rov_status = pickle.loads(rov_status)
             self.gui.update_gui(rov_status)
