@@ -1,26 +1,26 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 import sys
 import socket
 from gui import Ui_MainWindow
 from key_parsing import KeyParser
-from tcp_client import Client
+from tcp_client import TCPClient
 
 def main():
     try:
         app = QtWidgets.QApplication(sys.argv)
-        main_control = MainControl()
+        pilot_terminal = PilotTerminal()
         sys.exit(app.exec_())
     finally:
-        main_control.quit_program()
+        pilot_terminal.quit_program()
 
-class MainControl(QtWidgets.QMainWindow):
+class PilotTerminal(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
         self.gui = Ui_MainWindow()
         self.gui.setupUi(self)
         self.show()
-        self.client = Client('192.168.2.100', sys.argv[1], self)
+        self.client = TCPClient('192.168.2.100', sys.argv[1], self)
         self.key_parser = KeyParser()
 
     def update_gui(self, rov_status):

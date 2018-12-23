@@ -1,10 +1,9 @@
 import socket
-import sys
 from threading import Thread
 import pickle
 from rov import ROV
 
-class ROVServer:
+class TCPServer:
 
     def __init__(self, ip, port):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,11 +15,15 @@ class ROVServer:
             conn, addr = sock.accept()
             self.connections.append(conn)
             print('Client @ ' + str(addr) + ' has connected')
+            self.send('MESSAGE', 'Connected to ROV @ 192.168.2.100')
             listener = Thread(target=self.listen, args=(conn, addr))
             listener.start()
-            status = self.rov.update_status()
-            status = pickle.dumps(status)
-            conn.send(status)
+            self.send_rov_status()
+
+    def send(self, packet_type, data):
+        data = pickle.dumps((packet_type, data))
+        for connection in self.connections:
+            connection.send(data)
 
     def listen(self, conn, addr):
         while True:
@@ -31,7 +34,6 @@ class ROVServer:
                 print('Client @: ' + str(addr) + ' has disconnected')
                 break
             command = pickle.loads(command)
-
             if isinstance(command, tuple):
                 function = self.rov.commands[command[0]]
                 function(command)
@@ -39,10 +41,8 @@ class ROVServer:
                 function = self.rov.commands[command]
                 function()
 
-            status = self.rov.update_status()
-            status = pickle.dumps(status)
-            for connection in self.connections:
-                connection.send(status)
+            self.send_rov_status()
 
-if __name__ == '__main__':
-    ROVServer('192.168.2.100', int(sys.argv[1]))
+    def send_rov_status(self):
+        status = self.rov.update_status()
+        self.send('TELEMETRY', status)
