@@ -1,6 +1,6 @@
 import sys
 import socket
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
 from tcp_client import TCPClient
@@ -20,6 +20,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         super().__init__()
         self.gui = Ui_MainWindow()
         self.gui.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon(r'C:\Users\shane\Documents\Code\HuskyROV\images\husky.jpeg'))
         self.show()
         self.client = TCPClient('192.168.2.100', sys.argv[1], self)
         self.client.listener.data_signal.connect(self.update_gui)

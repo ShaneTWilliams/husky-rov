@@ -1,6 +1,6 @@
 import socket
-from threading import Thread
 import pickle
+from threading import Thread
 from rov import ROV
 
 class TCPServer:
