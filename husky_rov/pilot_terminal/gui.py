@@ -189,7 +189,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.uRovStatus.sizePolicy().hasHeightForWidth())
         self.uRovStatus.setSizePolicy(sizePolicy)
         self.uRovStatus.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.uRovStatus.setStyleSheet("color: rgb(0,255,0)")
+        self.uRovStatus.setStyleSheet("color: rgb(0,180,0)")
         self.uRovStatus.setAlignment(QtCore.Qt.AlignCenter)
         self.uRovStatus.setObjectName("uRovStatus")
         self.verticalLayout.addWidget(self.uRovStatus)

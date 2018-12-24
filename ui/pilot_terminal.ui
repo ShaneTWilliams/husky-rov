@@ -406,7 +406,7 @@
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">color: rgb(0,255,0)</string>
+                <string notr="true">color: rgb(0,180,0)</string>
                </property>
                <property name="text">
                 <string>Docked</string>
