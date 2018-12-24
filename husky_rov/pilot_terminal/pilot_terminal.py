@@ -1,9 +1,10 @@
-from PyQt5 import QtWidgets
 import sys
 import socket
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
-from key_parsing import KeyParser
 from tcp_client import TCPClient
+from key_parsing import KeyParser
 
 def main():
     try:
@@ -23,8 +24,12 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.client = TCPClient('192.168.2.100', sys.argv[1], self)
         self.client.listener.data_signal.connect(self.update_gui)
         self.key_parser = KeyParser()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.get_rov_status)
+        self.timer.start(500)
 
-        self.gui.pilotConnected.setStyleSheet("color:yellow")
+    def get_rov_status(self):
+        self.client.send('REQUEST_TELEMETRY')
 
     def update_gui(self, data):
         if data[0] == 'MESSAGE':
@@ -38,6 +43,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
             self.gui.motorSlider_5.setValue(rov_status['motor_5_speed'])
             self.gui.motorSlider_6.setValue(rov_status['motor_6_speed'])
             self.gui.uMotorSlider.setValue(rov_status['u_motor_speed'])
+
             if rov_status['u_rov_deployed']:
                 self.gui.uMotorSlider.setStyleSheet(
                     'QSlider::handle:vertical:disabled {background-color: rgb(0, 122, 217);}'
@@ -49,23 +55,20 @@ class PilotTerminal(QtWidgets.QMainWindow):
                 self.gui.uRovStatus.setText('Docked')
                 self.gui.uRovStatus.setStyleSheet('color:rgb(0, 180, 0)')
             self.gui.sensitivitySlider.setValue(rov_status['speed_multiplier'])
+
             if rov_status['pilot_connected']:
-                self.gui.pilotConnected.setStyleSheet(
-                    'color:rgb(0, 180, 0)'
-                )
+                self.gui.pilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
                 self.gui.pilotConnected.setText('Connected')
             else:
-                self.gui.pilotConnected.setStyleSheet(
-                    'color:rgb(180, 0, 0)'
-                )
+                self.gui.pilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
+                self.gui.pilotConnected.setText('Not Connected')
+
             if rov_status['copilot_connected']:
-                self.gui.copilotConnected.setStyleSheet(
-                    'color:rgb(0, 180, 0)'
-                )
+                self.gui.copilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
+                self.gui.copilotConnected.setText('Connected')
             else:
-                self.gui.copilotConnected.setStyleSheet(
-                    'color:rgb(180, 0, 0)'
-                )
+                self.gui.copilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
+                self.gui.copilotConnected.setText('Not Connected')
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -83,6 +86,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
                 self.client.send(command)
 
     def quit_program(self):
+        self.client.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.client.sock.shutdown(socket.SHUT_WR)
         sys.exit()
 

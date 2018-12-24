@@ -1,7 +1,7 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer
 import sys
 import socket
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
 from tcp_client import TCPClient
 
@@ -35,13 +35,8 @@ class CopilotTerminal(QtWidgets.QMainWindow):
         else:
             pass
 
-    def keyPressEvent(self, event):
-        pass
-
-    def keyReleaseEvent(self, event):
-        pass
-
     def quit_program(self):
+        self.client.send(('DISCONNECT_CLIENT', 'COPILOT'))
         self.client.sock.shutdown(socket.SHUT_WR)
         sys.exit()
 

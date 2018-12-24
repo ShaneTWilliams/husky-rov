@@ -32,5 +32,4 @@ class ListenerThread(QThread):
             if not data:
                 break
             data = pickle.loads(data)
-            print(data)
             self.data_signal.emit(data)

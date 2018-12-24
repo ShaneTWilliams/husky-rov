@@ -1,7 +1,7 @@
 import socket
 import pickle
-from PyQt5.QtCore import QThread, pyqtSignal
 from threading import Thread
+from PyQt5.QtCore import QThread, pyqtSignal
 
 class TCPClient:
 
@@ -30,7 +30,6 @@ class ListenerThread(QThread):
         while True:
             data = self.sock.recv(2048)
             if not data:
-                self.data_signal.emit(('MESSAGE', 'gone'))
                 break
             data = pickle.loads(data)
             self.data_signal.emit(data)

@@ -46,7 +46,8 @@ class ROV:
             'U_STOP' : self.urov.stop,
             'SHUT_DOWN' : self.shut_down,
             'REQUEST_TELEMETRY': self.send_status,
-            'CONNECT_CLIENT' : self.update_connections
+            'CONNECT_CLIENT' : self.connect_client,
+            'DISCONNECT_CLIENT' : self.disconnect_client
         }
 
     def update_status(self):
@@ -142,11 +143,17 @@ class ROV:
         else:
             self.urov.deployed = True
 
-    def update_connections(self, command):
+    def connect_client(self, command):
         if command[1] == 'PILOT':
             self.pilot_connected = True
         else:
             self.copilot_connected = True
+
+    def disconnect_client(self, command):
+        if command[1] == 'PILOT':
+            self.pilot_connected = False
+        else:
+            self.copilot_connected = False
 
     def send_status(self):
         pass
