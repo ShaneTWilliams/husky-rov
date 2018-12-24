@@ -1,27 +1,36 @@
 import socket
 import pickle
 from threading import Thread
+from PyQt5.QtCore import QThread, pyqtSignal
 
 class TCPClient:
+
     def __init__(self, ip, port, gui):
         self.gui = gui
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((ip, int(port)))
-        listener = Thread(target=self.listen)
-        listener.setDaemon(True)
-        listener.start()
+        self.listener = ListenerThread(self.sock, self.gui)
+        self.listener.start()
+        self.send(('CONNECT_CLIENT', 'PILOT'))
 
     def send(self, message):
         message = pickle.dumps(message)
         self.sock.send(message)
 
-    def listen(self):
+class ListenerThread(QThread):
+
+    data_signal = pyqtSignal(tuple)
+
+    def __init__(self, sock, gui):
+        QThread.__init__(self)
+        self.sock = sock
+        self.gui = gui
+
+    def run(self):
         while True:
             data = self.sock.recv(2048)
             if not data:
                 break
             data = pickle.loads(data)
-            if data[0] == 'MESSAGE':
-                print(data[1])
-            else:
-                self.gui.update_gui(data[1])
+            print(data)
+            self.data_signal.emit(data)

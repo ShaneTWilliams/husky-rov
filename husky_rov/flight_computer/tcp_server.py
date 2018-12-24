@@ -6,43 +6,57 @@ from rov import ROV
 class TCPServer:
 
     def __init__(self, ip, port):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((ip, port))
-        sock.listen(5)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind((ip, port))
+        self.sock.listen(5)
         self.rov = ROV()
         self.connections = []
-        while True:
-            conn, addr = sock.accept()
-            self.connections.append(conn)
-            print('Client @ ' + str(addr) + ' has connected')
-            self.send('MESSAGE', 'Connected to ROV @ 192.168.2.100')
-            listener = Thread(target=self.listen, args=(conn, addr))
-            listener.start()
-            self.send_rov_status()
+        self.listen_for_connections()
 
-    def send(self, packet_type, data):
-        data = pickle.dumps((packet_type, data))
+    def listen_for_connections(self):
+        while True:
+            conn, addr = self.sock.accept()
+            connection = Connection(conn, addr, self)
+            self.connections.append(connection)
+            self.send(
+                'MESSAGE',
+                '{} connected to ROV @ port {}'.format(connection.client_type, connection.port)
+            )
+
+    def send(self, message_type, message):
+        message = pickle.dumps((message_type, message))
         for connection in self.connections:
-            connection.send(data)
+            connection.conn.send(message)
 
-    def listen(self, conn, addr):
+class Connection:
+
+    def __init__(self, conn, addr, server):
+        self.conn = conn
+        self.addr = addr
+        self.ip = addr[0]
+        self.port = addr[1]
+        self.server = server
+        self.client_type = None
+        self.listener = Thread(target=self.listen)
+        self.listener.start()
+
+    def listen(self):
         while True:
-            command = conn.recv(2048)
+            command = self.conn.recv(2048)
             if not command:
-                conn.close()
-                self.connections.remove(conn)
-                print('Client @: ' + str(addr) + ' has disconnected')
+                self.conn.close()
+                self.server.connections.remove(self)
+                print(self.client_type + ' @ ' + str(self.addr) + ' has disconnected')
                 break
             command = pickle.loads(command)
+            if command[0] == 'CONNECT_CLIENT':
+                self.client_type = command[1]
+                print(self.client_type + ' @ ' + str(self.addr) + ' has connected')
             if isinstance(command, tuple):
-                function = self.rov.commands[command[0]]
+                function = self.server.rov.commands[command[0]]
                 function(command)
             else:
-                function = self.rov.commands[command]
+                function = self.server.rov.commands[command]
                 function()
 
-            self.send_rov_status()
-
-    def send_rov_status(self):
-        status = self.rov.update_status()
-        self.send('TELEMETRY', status)
+            self.server.send('TELEMETRY', self.server.rov.update_status())

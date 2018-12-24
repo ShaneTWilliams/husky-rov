@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 import sys
 import socket
 from gui import Ui_MainWindow
@@ -20,9 +21,19 @@ class CopilotTerminal(QtWidgets.QMainWindow):
         self.gui.setupUi(self)
         self.show()
         self.client = TCPClient('192.168.2.100', sys.argv[1], self)
+        self.client.listener.data_signal.connect(self.update_gui)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.get_rov_status)
+        self.timer.start(500)
 
-    def update_gui(self, rov_status):
-        pass
+    def get_rov_status(self):
+        self.client.send('REQUEST_TELEMETRY')
+
+    def update_gui(self, data):
+        if data[0] == 'MESSAGE':
+            self.gui.textBrowser.append(data[1])
+        else:
+            pass
 
     def keyPressEvent(self, event):
         pass

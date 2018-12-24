@@ -6,6 +6,8 @@ class ROV:
     def __init__(self):
         self.urov = uROV(self)
         self.speed_multiplier = 3
+        self.pilot_connected = False
+        self.copilot_connected = False
         self.rpi = pigpio.pi()
         self.motor_1 = Motor(self, 5)
         self.motor_2 = Motor(self, 6)
@@ -23,6 +25,8 @@ class ROV:
             'u_motor_speed' : 1500,
             'u_rov_deployed' : False,
             'speed_multiplier' : 3,
+            'pilot_connected' : False,
+            'copilot_connected' : False
         }
         self.commands = {
             'FORWARD' : self.go_forward,
@@ -40,7 +44,9 @@ class ROV:
             'H_STOP' : self.h_stop,
             'V_STOP' : self.v_stop,
             'U_STOP' : self.urov.stop,
-            'SHUT_DOWN' : self.shut_down
+            'SHUT_DOWN' : self.shut_down,
+            'REQUEST_TELEMETRY': self.send_status,
+            'CONNECT_CLIENT' : self.update_connections
         }
 
     def update_status(self):
@@ -53,6 +59,8 @@ class ROV:
         self.status['u_motor_speed'] = self.urov.motor.speed
         self.status['u_rov_deployed'] = self.urov.deployed
         self.status['speed_multiplier'] = self.speed_multiplier
+        self.status['pilot_connected'] = self.pilot_connected
+        self.status['copilot_connected'] = self.copilot_connected
         return self.status
 
     def go_forward(self):
@@ -134,6 +142,14 @@ class ROV:
         else:
             self.urov.deployed = True
 
+    def update_connections(self, command):
+        if command[1] == 'PILOT':
+            self.pilot_connected = True
+        else:
+            self.copilot_connected = True
+
+    def send_status(self):
+        pass
 
 class uROV:
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\shane\Documents\Code\HuskyExplorer\ui\husky_explorer.ui'
+# Form implementation generated from reading ui file 'C:\Users\shane\Documents\Code\HuskyROV\ui\pilot_terminal.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -29,11 +29,6 @@ class Ui_MainWindow(object):
         self.frame.setObjectName("frame")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.frame)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.groupBox = QtWidgets.QGroupBox(self.frame)
-        self.groupBox.setObjectName("groupBox")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-        self.gridLayout_2.addWidget(self.groupBox, 0, 1, 1, 1)
         self.motorFrame = QtWidgets.QGroupBox(self.frame)
         self.motorFrame.setObjectName("motorFrame")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.motorFrame)
@@ -205,8 +200,45 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setRowStretch(0, 9)
         self.gridLayout_3.setRowStretch(1, 1)
         self.gridLayout_2.addWidget(self.motorFrame, 0, 0, 1, 1)
+        self.groupBox = QtWidgets.QGroupBox(self.frame)
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.textBrowser = QtWidgets.QTextBrowser(self.groupBox)
+        self.textBrowser.setEnabled(True)
+        self.textBrowser.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout_6.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox, 0, 1, 1, 1)
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setObjectName("groupBox_2")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_2)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        self.pilotConnected = QtWidgets.QPushButton(self.groupBox_2)
+        self.pilotConnected.setEnabled(True)
+        self.pilotConnected.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.pilotConnected.setStyleSheet("QPushButton{color:rgb(180, 0, 0)}")
+        self.pilotConnected.setObjectName("pilotConnected")
+        self.gridLayout_7.addWidget(self.pilotConnected, 0, 1, 1, 1)
+        self.label_8 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_8.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_7.addWidget(self.label_8, 1, 0, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_9.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.label_9.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_7.addWidget(self.label_9, 0, 0, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_7.addItem(spacerItem, 0, 2, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_7.addItem(spacerItem1, 2, 0, 1, 1)
+        self.copilotConnected = QtWidgets.QPushButton(self.groupBox_2)
+        self.copilotConnected.setEnabled(True)
+        self.copilotConnected.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.copilotConnected.setStyleSheet("QPushButton{color:rgb(180, 0, 0)}")
+        self.copilotConnected.setObjectName("copilotConnected")
+        self.gridLayout_7.addWidget(self.copilotConnected, 1, 1, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_2, 1, 0, 1, 2)
         self.gridLayout_2.setColumnStretch(0, 3)
         self.gridLayout_2.setColumnStretch(1, 2)
@@ -221,7 +253,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Husky Explorer"))
-        self.groupBox.setTitle(_translate("MainWindow", "GroupBox"))
         self.motorFrame.setTitle(_translate("MainWindow", "Motor Control"))
         self.horizontalFrame.setTitle(_translate("MainWindow", "Horizontal"))
         self.label_5.setText(_translate("MainWindow", "Motor 4"))
@@ -234,7 +265,12 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Sensitivity"))
         self.uRovFrame.setTitle(_translate("MainWindow", "Micro-ROV"))
         self.uRovStatus.setText(_translate("MainWindow", "Docked"))
-        self.groupBox_2.setTitle(_translate("MainWindow", "GroupBox"))
+        self.groupBox.setTitle(_translate("MainWindow", "ROV Output"))
+        self.groupBox_2.setTitle(_translate("MainWindow", "ROV Telemetry"))
+        self.pilotConnected.setText(_translate("MainWindow", "Not Connected"))
+        self.label_8.setText(_translate("MainWindow", "Co-Pilot:"))
+        self.label_9.setText(_translate("MainWindow", "Pilot:"))
+        self.copilotConnected.setText(_translate("MainWindow", "Not Connected"))
 
 
 if __name__ == "__main__":
