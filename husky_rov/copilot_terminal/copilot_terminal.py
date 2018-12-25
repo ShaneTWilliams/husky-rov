@@ -1,9 +1,10 @@
 import sys
 import socket
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
 from tcp_client import TCPClient
+
 
 def main():
     try:
@@ -13,13 +14,16 @@ def main():
     finally:
         copilot_terminal.quit_program()
 
+
 class CopilotTerminal(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
         self.gui = Ui_MainWindow()
         self.gui.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(r'C:\Users\shane\Documents\Code\HuskyROV\images\husky.jpeg'))
+        self.setWindowIcon(QtGui.QIcon(
+            '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
+        ))
         self.show()
         self.client = TCPClient('192.168.2.100', sys.argv[1], self)
         self.client.listener.data_signal.connect(self.update_gui)
@@ -40,6 +44,7 @@ class CopilotTerminal(QtWidgets.QMainWindow):
         self.client.send(('DISCONNECT_CLIENT', 'COPILOT'))
         self.client.sock.shutdown(socket.SHUT_WR)
         sys.exit()
+
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 import socket
 import pickle
-from threading import Thread
 from PyQt5.QtCore import QThread, pyqtSignal
+
 
 class TCPClient:
 
@@ -16,6 +16,7 @@ class TCPClient:
     def send(self, message):
         message = pickle.dumps(message)
         self.sock.send(message)
+
 
 class ListenerThread(QThread):
 

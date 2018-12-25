@@ -16,38 +16,38 @@ class ROV:
         self.motor_5 = Motor(self, 26)
         self.motor_6 = Motor(self, 12)
         self.status = {
-            'motor_1_speed' : 1500,
-            'motor_2_speed' : 1500,
-            'motor_3_speed' : 1500,
-            'motor_4_speed' : 1500,
-            'motor_5_speed' : 1500,
-            'motor_6_speed' : 1500,
-            'u_motor_speed' : 1500,
-            'u_rov_deployed' : False,
-            'speed_multiplier' : 3,
-            'pilot_connected' : False,
-            'copilot_connected' : False
+            'motor_1_speed': 1500,
+            'motor_2_speed': 1500,
+            'motor_3_speed': 1500,
+            'motor_4_speed': 1500,
+            'motor_5_speed': 1500,
+            'motor_6_speed': 1500,
+            'u_motor_speed': 1500,
+            'u_rov_deployed': False,
+            'speed_multiplier': 3,
+            'pilot_connected': False,
+            'copilot_connected': False
         }
         self.commands = {
-            'FORWARD' : self.go_forward,
-            'BACKWARD' : self.go_backward,
-            'STRAFE_LEFT' : self.strafe_left,
-            'STRAFE_RIGHT' : self.strafe_right,
-            'SPIN_LEFT' : self.spin_left,
-            'SPIN_RIGHT' : self.spin_right,
-            'UP' : self.go_up,
-            'DOWN' : self.go_down,
-            'U_FORWARD' : self.urov.go_forward,
-            'U_BACKWARD' : self.urov.go_backward,
-            'SET_SPEED_MULTIPLIER' : self.set_speed_multiplier,
-            'U_TOGGLE_DEPLOY' : self.toggle_urov_deploy,
-            'H_STOP' : self.h_stop,
-            'V_STOP' : self.v_stop,
-            'U_STOP' : self.urov.stop,
-            'SHUT_DOWN' : self.shut_down,
+            'FORWARD': self.go_forward,
+            'BACKWARD': self.go_backward,
+            'STRAFE_LEFT': self.strafe_left,
+            'STRAFE_RIGHT': self.strafe_right,
+            'SPIN_LEFT': self.spin_left,
+            'SPIN_RIGHT': self.spin_right,
+            'UP': self.go_up,
+            'DOWN': self.go_down,
+            'U_FORWARD': self.urov.go_forward,
+            'U_BACKWARD': self.urov.go_backward,
+            'SET_SPEED_MULTIPLIER': self.set_speed_multiplier,
+            'U_TOGGLE_DEPLOY': self.toggle_urov_deploy,
+            'H_STOP': self.h_stop,
+            'V_STOP': self.v_stop,
+            'U_STOP': self.urov.stop,
+            'SHUT_DOWN': self.shut_down,
             'REQUEST_TELEMETRY': self.send_status,
-            'CONNECT_CLIENT' : self.connect_client,
-            'DISCONNECT_CLIENT' : self.disconnect_client
+            'CONNECT_CLIENT': self.connect_client,
+            'DISCONNECT_CLIENT': self.disconnect_client
         }
 
     def update_status(self):
@@ -136,7 +136,6 @@ class ROV:
         self.motor_6.kill_pwm()
         self.urov.motor.kill_pwm()
 
-
     def toggle_urov_deploy(self):
         if self.urov.deployed:
             self.urov.deployed = False
@@ -157,6 +156,7 @@ class ROV:
 
     def send_status(self):
         pass
+
 
 class uROV:
 

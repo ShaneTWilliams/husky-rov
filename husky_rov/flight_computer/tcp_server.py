@@ -3,6 +3,7 @@ import pickle
 from threading import Thread
 from rov import ROV
 
+
 class TCPServer:
 
     def __init__(self, ip, port):
@@ -29,6 +30,7 @@ class TCPServer:
         message = pickle.dumps(('MESSAGE', message))
         for connection in self.connections:
             connection.conn.send(message)
+
 
 class Connection:
 

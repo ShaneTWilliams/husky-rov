@@ -6,6 +6,7 @@ from gui import Ui_MainWindow
 from tcp_client import TCPClient
 from key_parsing import KeyParser
 
+
 def main():
     try:
         app = QtWidgets.QApplication(sys.argv)
@@ -14,13 +15,16 @@ def main():
     finally:
         pilot_terminal.quit_program()
 
+
 class PilotTerminal(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
         self.gui = Ui_MainWindow()
         self.gui.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(r'C:\Users\shane\Documents\Code\HuskyROV\images\husky.jpeg'))
+        self.setWindowIcon(QtGui.QIcon(
+                '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
+        ))
         self.show()
         self.client = TCPClient('192.168.2.100', sys.argv[1], self)
         self.client.listener.data_signal.connect(self.update_gui)
@@ -47,7 +51,8 @@ class PilotTerminal(QtWidgets.QMainWindow):
 
             if rov_status['u_rov_deployed']:
                 self.gui.uMotorSlider.setStyleSheet(
-                    'QSlider::handle:vertical:disabled {background-color: rgb(0, 122, 217);}'
+                    '''QSlider::handle:vertical:disabled
+                    {background-color: rgb(0, 122, 217);}'''
                 )
                 self.gui.uRovStatus.setText('Released')
                 self.gui.uRovStatus.setStyleSheet('color:rgb(180,0,0)')
@@ -90,6 +95,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.client.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.client.sock.shutdown(socket.SHUT_WR)
         sys.exit()
+
 
 if __name__ == '__main__':
     main()
