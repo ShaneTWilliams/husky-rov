@@ -20,14 +20,14 @@ class PilotTerminal(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.gui = Ui_MainWindow()
-        self.gui.setupUi(self)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
         self.setWindowIcon(QtGui.QIcon(
                 '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
         ))
         self.show()
-        self.client = TCPClient('192.168.2.100', sys.argv[1], self)
-        self.client.listener.data_signal.connect(self.update_gui)
+        self.client = TCPClient('192.168.2.99', sys.argv[1], self)
+        self.client.listener.data_signal.connect(self.update_ui)
         self.key_parser = KeyParser()
         self.timer = QTimer()
         self.timer.timeout.connect(self.get_rov_status)
@@ -36,45 +36,45 @@ class PilotTerminal(QtWidgets.QMainWindow):
     def get_rov_status(self):
         self.client.send('REQUEST_TELEMETRY')
 
-    def update_gui(self, data):
+    def update_ui(self, data):
         if data[0] == 'MESSAGE':
-            self.gui.textBrowser.append(data[1])
+            self.ui.textBrowser.append(data[1])
         else:
             rov_status = data[1]
-            self.gui.motorSlider_1.setValue(rov_status['motor_1_speed'])
-            self.gui.motorSlider_2.setValue(rov_status['motor_2_speed'])
-            self.gui.motorSlider_3.setValue(rov_status['motor_3_speed'])
-            self.gui.motorSlider_4.setValue(rov_status['motor_4_speed'])
-            self.gui.motorSlider_5.setValue(rov_status['motor_5_speed'])
-            self.gui.motorSlider_6.setValue(rov_status['motor_6_speed'])
-            self.gui.uMotorSlider.setValue(rov_status['u_motor_speed'])
+            self.ui.motorSlider_1.setValue(rov_status['motor_1_speed'])
+            self.ui.motorSlider_2.setValue(rov_status['motor_2_speed'])
+            self.ui.motorSlider_3.setValue(rov_status['motor_3_speed'])
+            self.ui.motorSlider_4.setValue(rov_status['motor_4_speed'])
+            self.ui.motorSlider_5.setValue(rov_status['motor_5_speed'])
+            self.ui.motorSlider_6.setValue(rov_status['motor_6_speed'])
+            self.ui.uMotorSlider.setValue(rov_status['u_motor_speed'])
 
             if rov_status['u_rov_deployed']:
-                self.gui.uMotorSlider.setStyleSheet(
+                self.ui.uMotorSlider.setStyleSheet(
                     '''QSlider::handle:vertical:disabled
                     {background-color: rgb(0, 122, 217);}'''
                 )
-                self.gui.uRovStatus.setText('Released')
-                self.gui.uRovStatus.setStyleSheet('color:rgb(180,0,0)')
+                self.ui.uRovStatus.setText('Released')
+                self.ui.uRovStatus.setStyleSheet('color:rgb(180,0,0)')
             else:
-                self.gui.uMotorSlider.setStyleSheet('')
-                self.gui.uRovStatus.setText('Docked')
-                self.gui.uRovStatus.setStyleSheet('color:rgb(0, 180, 0)')
-            self.gui.sensitivitySlider.setValue(rov_status['speed_multiplier'])
+                self.ui.uMotorSlider.setStyleSheet('')
+                self.ui.uRovStatus.setText('Docked')
+                self.ui.uRovStatus.setStyleSheet('color:rgb(0, 180, 0)')
+            self.ui.sensitivitySlider.setValue(rov_status['speed_multiplier'])
 
             if rov_status['pilot_connected']:
-                self.gui.pilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
-                self.gui.pilotConnected.setText('Connected')
+                self.ui.pilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
+                self.ui.pilotConnected.setText('Connected')
             else:
-                self.gui.pilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
-                self.gui.pilotConnected.setText('Not Connected')
+                self.ui.pilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
+                self.ui.pilotConnected.setText('Not Connected')
 
             if rov_status['copilot_connected']:
-                self.gui.copilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
-                self.gui.copilotConnected.setText('Connected')
+                self.ui.copilotConnected.setStyleSheet('color:rgb(0, 180, 0)')
+                self.ui.copilotConnected.setText('Connected')
             else:
-                self.gui.copilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
-                self.gui.copilotConnected.setText('Not Connected')
+                self.ui.copilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
+                self.ui.copilotConnected.setText('Not Connected')
 
     def keyPressEvent(self, event):
         key = event.key()

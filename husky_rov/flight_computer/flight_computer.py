@@ -3,4 +3,4 @@ import sys
 
 
 if __name__ == '__main__':
-    TCPServer('192.168.2.100', int(sys.argv[1]))
+    TCPServer('192.168.2.99', int(sys.argv[1]))

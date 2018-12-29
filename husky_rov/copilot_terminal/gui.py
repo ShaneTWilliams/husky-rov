@@ -30,6 +30,21 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName("gridLayout_2")
+        self.label_2 = QtWidgets.QLabel(self.groupBox)
+        self.label_2.setText("")
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_2.addWidget(self.label_2, 0, 1, 1, 1)
+        self.label = QtWidgets.QLabel(self.groupBox)
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
+        self.label_3 = QtWidgets.QLabel(self.groupBox)
+        self.label_3.setText("")
+        self.label_3.setObjectName("label_3")
+        self.gridLayout_2.addWidget(self.label_3, 0, 2, 1, 1)
+        self.gridLayout_2.setColumnStretch(0, 2)
+        self.gridLayout_2.setColumnStretch(1, 2)
+        self.gridLayout_2.setColumnStretch(2, 1)
         self.gridLayout_3.addWidget(self.groupBox, 1, 1, 1, 1)
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setObjectName("groupBox_2")
@@ -53,7 +68,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Co-Pilot Terminal"))
-        self.groupBox.setTitle(_translate("MainWindow", "Text Edit"))
+        self.groupBox.setTitle(_translate("MainWindow", "Video"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Text Browser"))
 
 
