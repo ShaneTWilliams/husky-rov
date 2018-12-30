@@ -26,17 +26,24 @@ class CopilotTerminal(QtWidgets.QMainWindow):
             '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
         ))
         self.show()
+
         self.client = TCPClient('192.168.2.99', sys.argv[1], self)
         self.client.listener.data_signal.connect(self.update_gui)
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.get_rov_status)
         self.timer.start(500)
-        self.stream = VideoStream('http://192.168.2.100:8081')
-        self.stream.frame_signal.connect(self.update_video)
+
+        self.stream = VideoStream('http://192.168.2.99:8081')
+        self.stream.video_signal.connect(self.update_video)
         self.stream.start()
 
-    def update_video(self, frame):
-        self.ui.label.setPixmap(frame)
+    def update_video(self, video):
+        color_video = video[0].scaledToWidth(500)
+        binary_video = video[1].scaledToWidth(500)
+        self.ui.label.setPixmap(color_video)
+        self.ui.label_2.setPixmap(binary_video)
+        print(video[2])
 
     def get_rov_status(self):
         self.client.send('REQUEST_TELEMETRY')
