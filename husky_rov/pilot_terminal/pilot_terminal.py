@@ -37,10 +37,9 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.client.send('REQUEST_TELEMETRY')
 
     def update_ui(self, data):
-        if data[0] == 'MESSAGE':
-            self.ui.textBrowser.append(data[1])
-        else:
+        if data[0] == 'TELEMETRY':
             rov_status = data[1]
+
             self.ui.motorSlider_1.setValue(rov_status['motor_1_speed'])
             self.ui.motorSlider_2.setValue(rov_status['motor_2_speed'])
             self.ui.motorSlider_3.setValue(rov_status['motor_3_speed'])
@@ -60,6 +59,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
                 self.ui.uMotorSlider.setStyleSheet('')
                 self.ui.uRovStatus.setText('Docked')
                 self.ui.uRovStatus.setStyleSheet('color:rgb(0, 180, 0)')
+
             self.ui.sensitivitySlider.setValue(rov_status['speed_multiplier'])
 
             if rov_status['pilot_connected']:
@@ -75,10 +75,11 @@ class PilotTerminal(QtWidgets.QMainWindow):
             else:
                 self.ui.copilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
                 self.ui.copilotConnected.setText('Not Connected')
+        else:
+            self.ui.textBrowser.append(data[1])
 
     def keyPressEvent(self, event):
         key = event.key()
-
         if not event.isAutoRepeat():
             command = self.key_parser.parse_press(key)
             if command:

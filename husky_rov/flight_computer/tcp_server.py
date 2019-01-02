@@ -22,7 +22,7 @@ class TCPServer:
 
     def send_telemetry(self):
         telemetry = self.rov.update_status()
-        telemetry = pickle.dumps(('TELEMTRY', telemetry))
+        telemetry = pickle.dumps(('TELEMETRY', telemetry))
         for connection in self.connections:
             connection.conn.send(telemetry)
 
