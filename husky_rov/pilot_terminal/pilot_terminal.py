@@ -26,12 +26,41 @@ class PilotTerminal(QtWidgets.QMainWindow):
                 '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
         ))
         self.show()
-        self.client = TCPClient('192.168.2.99', sys.argv[1], self)
-        self.client.listener.data_signal.connect(self.update_ui)
         self.key_parser = KeyParser()
+        self.client = TCPClient()
         self.timer = QTimer()
         self.timer.timeout.connect(self.get_rov_status)
+        self.ui.connectButton.clicked.connect(self.connnect_to_rov)
+        self.ui.disconnectButton.clicked.connect(self.disconnect_from_rov)
+        self.client.listener.data_signal.connect(self.update_ui)
+
+    def print_to_window(self, message):
+        self.ui.textBrowser.append(message)
+
+    def connnect_to_rov(self):
+        port = self.ui.portTextField.text()
+        try:
+            self.client.connect(port)
+        except ValueError:
+            self.print_to_window('Invalid port')
+            return
+        except ConnectionRefusedError:
+            self.print_to_window('Connection refused by ROV: bad port')
+            return
+        except OverflowError:
+            self.print_to_window('Port number out of range')
+            return
         self.timer.start(500)
+        self.ui.portTextField.setDisabled(True)
+        self.ui.connectButton.setDisabled(True)
+        self.ui.disconnectButton.setDisabled(False)
+
+    def disconnect_from_rov(self):
+        self.client.disconnect()
+        self.timer.stop()
+        self.ui.portTextField.setDisabled(False)
+        self.ui.connectButton.setDisabled(False)
+        self.ui.disconnectButton.setDisabled(True)
 
     def get_rov_status(self):
         self.client.send('REQUEST_TELEMETRY')
@@ -82,19 +111,19 @@ class PilotTerminal(QtWidgets.QMainWindow):
         key = event.key()
         if not event.isAutoRepeat():
             command = self.key_parser.parse_press(key)
-            if command:
+            if command and self.client.is_connected:
                 self.client.send(command)
 
     def keyReleaseEvent(self, event):
         key = event.key()
         if not event.isAutoRepeat():
             command = self.key_parser.parse_release(key)
-            if command:
+            if command and self.client.is_connected:
                 self.client.send(command)
 
     def quit_program(self):
-        self.client.send(('DISCONNECT_CLIENT', 'PILOT'))
-        self.client.sock.shutdown(socket.SHUT_WR)
+        if self.client.is_connected:
+            self.client.disconnect()
         sys.exit()
 
 

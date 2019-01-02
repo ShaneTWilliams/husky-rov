@@ -88,7 +88,8 @@ class KeyParser:
         if key in self.movement_keys:
             group = self.movement_keys[key]['group']
             command = self.movement_keys[key]['command']
-            self.pressed_keys[group].remove(command)
+            if command in self.pressed_keys[group]:
+                self.pressed_keys[group].remove(command)
             command = self.pressed_keys[group][-1]
         else:
             command = None

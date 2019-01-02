@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>570</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,26 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1" columnstretch="3,2">
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="3,0" columnstretch="3,0">
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>ROV Output</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QTextBrowser" name="textBrowser">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QGroupBox" name="motorFrame">
          <property name="title">
@@ -422,31 +441,35 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QGroupBox" name="groupBox">
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>ROV Output</string>
+          <string>ROV</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QTextBrowser" name="textBrowser">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="4">
+           <widget class="QPushButton" name="connectButton">
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
+            <property name="text">
+             <string>Connect</string>
+            </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>ROV Telemetry</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="2" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="0" column="1">
            <widget class="QPushButton" name="pilotConnected">
             <property name="enabled">
@@ -486,32 +509,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="0">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="1">
            <widget class="QPushButton" name="copilotConnected">
             <property name="enabled">
@@ -525,6 +522,46 @@
             </property>
             <property name="text">
              <string>Not Connected</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLineEdit" name="portTextField">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QPushButton" name="disconnectButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="text">
+             <string>Disconnect</string>
             </property>
            </widget>
           </item>
