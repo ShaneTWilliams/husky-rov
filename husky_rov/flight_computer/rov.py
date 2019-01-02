@@ -1,6 +1,7 @@
 import pigpio
 from components import Motor
 
+
 class ROV:
 
     def __init__(self):
@@ -15,19 +16,7 @@ class ROV:
         self.motor_4 = Motor(self, 19)
         self.motor_5 = Motor(self, 26)
         self.motor_6 = Motor(self, 12)
-        self.status = {
-            'motor_1_speed': 1500,
-            'motor_2_speed': 1500,
-            'motor_3_speed': 1500,
-            'motor_4_speed': 1500,
-            'motor_5_speed': 1500,
-            'motor_6_speed': 1500,
-            'u_motor_speed': 1500,
-            'u_rov_deployed': False,
-            'speed_multiplier': 3,
-            'pilot_connected': False,
-            'copilot_connected': False
-        }
+        self.update_status()
         self.commands = {
             'FORWARD': self.go_forward,
             'BACKWARD': self.go_backward,
@@ -45,23 +34,25 @@ class ROV:
             'V_STOP': self.v_stop,
             'U_STOP': self.urov.stop,
             'SHUT_DOWN': self.shut_down,
-            'REQUEST_TELEMETRY': self.send_status,
+            'REQUEST_TELEMETRY': self.update_status,
             'CONNECT_CLIENT': self.connect_client,
             'DISCONNECT_CLIENT': self.disconnect_client
         }
 
     def update_status(self):
-        self.status['motor_1_speed'] = self.motor_1.speed
-        self.status['motor_2_speed'] = self.motor_2.speed
-        self.status['motor_3_speed'] = self.motor_3.speed
-        self.status['motor_4_speed'] = self.motor_4.speed
-        self.status['motor_5_speed'] = self.motor_5.speed
-        self.status['motor_6_speed'] = self.motor_6.speed
-        self.status['u_motor_speed'] = self.urov.motor.speed
-        self.status['u_rov_deployed'] = self.urov.deployed
-        self.status['speed_multiplier'] = self.speed_multiplier
-        self.status['pilot_connected'] = self.pilot_connected
-        self.status['copilot_connected'] = self.copilot_connected
+        self.status = {
+            'motor_1_speed': self.motor_1.speed,
+            'motor_2_speed': self.motor_2.speed,
+            'motor_3_speed': self.motor_3.speed,
+            'motor_4_speed': self.motor_4.speed,
+            'motor_5_speed': self.motor_5.speed,
+            'motor_6_speed': self.motor_6.speed,
+            'u_motor_speed': self.urov.motor.speed,
+            'u_rov_deployed': self.urov.deployed,
+            'speed_multiplier': self.speed_multiplier,
+            'pilot_connected': self.pilot_connected,
+            'copilot_connected': self.copilot_connected
+        }
         return self.status
 
     def go_forward(self):
@@ -137,25 +128,19 @@ class ROV:
         self.urov.motor.kill_pwm()
 
     def toggle_urov_deploy(self):
-        if self.urov.deployed:
-            self.urov.deployed = False
-        else:
-            self.urov.deployed = True
+        self.urov.deployed = not self.urov.deployed
 
     def connect_client(self, command):
         if command[1] == 'PILOT':
             self.pilot_connected = True
-        else:
+        elif command[1] == 'COPILOT':
             self.copilot_connected = True
 
     def disconnect_client(self, command):
         if command[1] == 'PILOT':
             self.pilot_connected = False
-        else:
+        elif command[1] == 'COPILOT':
             self.copilot_connected = False
-
-    def send_status(self):
-        pass
 
 
 class uROV:

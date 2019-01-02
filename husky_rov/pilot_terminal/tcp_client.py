@@ -17,6 +17,7 @@ class TCPClient:
         self.is_connected = True
 
     def disconnect(self):
+        self.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.sock.shutdown(socket.SHUT_WR)
         self.is_connected = False
 

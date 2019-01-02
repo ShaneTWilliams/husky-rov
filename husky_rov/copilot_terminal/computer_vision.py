@@ -45,7 +45,7 @@ class VideoProcessor:
             'circles': 0
         }
         for contour in contours:
-            arc_length = cv2.arcLength(cnt, True)
+            arc_length = cv2.arcLength(contour, True)
             if arc_length > 100 and arc_length < 300:
                 sides = cv2.approxPolyDP(
                     contour,

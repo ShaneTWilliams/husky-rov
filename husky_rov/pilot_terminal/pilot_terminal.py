@@ -1,5 +1,4 @@
 import sys
-import socket
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QTimer
 from gui import Ui_MainWindow
@@ -45,7 +44,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
             self.print_to_window('Invalid port')
             return
         except ConnectionRefusedError:
-            self.print_to_window('Connection refused by ROV: bad port')
+            self.print_to_window('Connection refused by ROV')
             return
         except OverflowError:
             self.print_to_window('Port number out of range')

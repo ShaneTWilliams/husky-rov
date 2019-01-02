@@ -39,7 +39,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2" rowstretch="3,0" columnstretch="3,0">
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="3,2" columnstretch="3,0">
        <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">

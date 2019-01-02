@@ -258,6 +258,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.groupBox_2, 1, 0, 1, 1)
         self.gridLayout_2.setColumnStretch(0, 3)
         self.gridLayout_2.setRowStretch(0, 3)
+        self.gridLayout_2.setRowStretch(1, 2)
         self.gridLayout.addWidget(self.frame, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
