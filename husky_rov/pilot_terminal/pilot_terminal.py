@@ -12,7 +12,7 @@ def main():
         pilot_terminal = PilotTerminal()
         sys.exit(app.exec_())
     finally:
-        pilot_terminal.quit_program()
+        pilot_terminal.quit_program()  # Graceful shutdown of socket & ROV
 
 
 class PilotTerminal(QtWidgets.QMainWindow):
@@ -21,18 +21,18 @@ class PilotTerminal(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(
-                '/Users/shane/Documents/Code/HuskyROV/images/husky.jpeg'
-        ))
-        self.show()
-        self.key_parser = KeyParser()
-        self.client = TCPClient()
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.get_rov_status)
         self.ui.connectButton.clicked.connect(self.connnect_to_rov)
         self.ui.disconnectButton.clicked.connect(self.disconnect_from_rov)
-        self.client.listener.data_signal.connect(self.update_ui)
+        self.setWindowIcon(QtGui.QIcon('../../images/husky.jpeg'))
+        self.show()
 
+        self.key_parser = KeyParser()
+        self.client = TCPClient()
+        self.client.listener.data_signal.connect(self.update_ui)
+        self.timer = QTimer()  # Timer to get ROV status at random intervals
+        self.timer.timeout.connect(self.get_rov_status)
+
+    # Prints text to the control interface
     def print_to_window(self, message):
         self.ui.textBrowser.append(message)
 
@@ -49,7 +49,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         except OverflowError:
             self.print_to_window('Port number out of range')
             return
-        self.timer.start(500)
+        self.timer.start(50)  # Start timer at 20 Hz
         self.ui.portTextField.setDisabled(True)
         self.ui.connectButton.setDisabled(True)
         self.ui.disconnectButton.setDisabled(False)
@@ -67,7 +67,6 @@ class PilotTerminal(QtWidgets.QMainWindow):
     def update_ui(self, data):
         if data[0] == 'TELEMETRY':
             rov_status = data[1]
-
             self.ui.motorSlider_1.setValue(rov_status['motor_1_speed'])
             self.ui.motorSlider_2.setValue(rov_status['motor_2_speed'])
             self.ui.motorSlider_3.setValue(rov_status['motor_3_speed'])
@@ -103,6 +102,13 @@ class PilotTerminal(QtWidgets.QMainWindow):
             else:
                 self.ui.copilotConnected.setStyleSheet('color:rgb(180, 0, 0)')
                 self.ui.copilotConnected.setText('Not Connected')
+
+            self.ui.hCamSlider.setValue(
+                1500 - (rov_status['h_cam_servo_position'] - 1500)
+            )
+            self.ui.vCamSlider.setValue(
+                1400 - (rov_status['v_cam_servo_position'] - 1400)
+            )
         else:
             self.ui.textBrowser.append(data[1])
 
