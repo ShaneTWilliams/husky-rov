@@ -31,10 +31,10 @@ class Servo:
         self.rov = rov
         self.pin = pin
         self.bounds = bounds
-        self.position = 1500
-        self.move(self.position)
         self.moving_clockwise = False
         self.moving_counterclockwise = False
+        self.position = 1500
+        self.move(self.position)
         self.timer = Thread(target=self.increment_position)
         self.timer.start()
 

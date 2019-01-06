@@ -19,6 +19,7 @@ class TCPClient:
     def disconnect(self):
         self.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.sock.shutdown(socket.SHUT_WR)
+        self.listener.quit()
         self.is_connected = False
 
     def send(self, message):
@@ -35,9 +36,8 @@ class ListenerThread(QThread):
         self.client = client
 
     def run(self):
-        self.sock = self.client.sock
         while True:
-            data = self.sock.recv(2048)
+            data = self.client.sock.recv(2048)
             if not data:
                 self.client.sock.close()
                 break
