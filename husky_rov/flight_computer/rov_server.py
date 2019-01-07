@@ -42,7 +42,6 @@ class Connection:
         self.port = addr[1]
         self.server = server
         self.server.connections.append(self)
-        self.rov = self.server.rov
         self.client_type = None
         self.listener = Thread(target=self.listen)
         self.listener.start()  # spawn threaded listener
@@ -88,5 +87,5 @@ class Connection:
         self.server.connections.remove(self)
         self.conn.shutdown(socket.SHUT_WR)
         self.conn.close()
-        if not self.rov.pilot_connected:
-            self.rov.shut_down()
+        if not self.server.rov.pilot_connected:
+            self.server.rov.shut_down()
