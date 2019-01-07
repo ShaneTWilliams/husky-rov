@@ -50,8 +50,12 @@ class Connection:
             'Client connected to ROV @ {}'.format(self.ip)
         )
         # TODO: move this shit somewhere else
-        self.server.rov.v_cam_servo.move_to(self.server.rov.v_cam_servo.position)
-        self.server.rov.h_cam_servo.move_to(self.server.rov.h_cam_servo.position)
+        self.server.rov.v_cam_servo.move_to(
+            self.server.rov.v_cam_servo.position
+        )
+        self.server.rov.h_cam_servo.move_to(
+            self.server.rov.h_cam_servo.position
+        )
 
     # Threaded function, listens on socket for commands
     def listen(self):
