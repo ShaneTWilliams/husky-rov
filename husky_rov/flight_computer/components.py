@@ -61,7 +61,7 @@ class Servo:
         self.moving_clockwise = False
         self.moving_counterclockwise = False
 
-    def move(self, position):
+    def move_to(self, position):
         self.rov.rpi.set_servo_pulsewidth(self.pin, position)
 
     def kill_pwm(self):
