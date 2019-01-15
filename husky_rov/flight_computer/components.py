@@ -34,7 +34,7 @@ class Servo:
         self.moving_clockwise = False
         self.moving_counterclockwise = False
         self.position = 1500
-        self.move(self.position)
+        self.move_to(self.position)
         self.timer = Thread(target=self.increment_position)
         self.timer.start()
 
@@ -42,11 +42,11 @@ class Servo:
         while True:
             if self.moving_clockwise and self.position < self.bounds[1]:
                 self.position += 1
-                self.move(self.position)
+                self.move_to(self.position)
             elif (self.moving_counterclockwise
                   and self.position > self.bounds[0]):
                 self.position -= 1
-                self.move(self.position)
+                self.move_to(self.position)
             time.sleep(0.002)
 
     def move_clockwise(self):
