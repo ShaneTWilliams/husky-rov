@@ -11,7 +11,17 @@ class TCPClient:
 
     def connect(self, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect(('192.168.2.99', int(port)))
+        self.sock.settimeout(1)
+        try:
+            self.sock.connect(('192.168.2.99', int(port)))
+        except ValueError:
+            return 'Invalid port'
+        except ConnectionRefusedError:
+            return 'Connection refused by ROV'
+        except OverflowError:
+            return 'Port number out of range'
+        except socket.timeout:
+            return 'Connection attempt timed out'
         self.listener.start()
         self.send(('CONNECT_CLIENT', 'PILOT'))
         self.is_connected = True
