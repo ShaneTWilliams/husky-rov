@@ -38,16 +38,9 @@ class PilotTerminal(QtWidgets.QMainWindow):
 
     def connnect_to_rov(self):
         port = self.ui.portTextField.text()
-        try:
-            self.client.connect(port)
-        except ValueError:
-            self.print_to_window('Invalid port')
-            return
-        except ConnectionRefusedError:
-            self.print_to_window('Connection refused by ROV')
-            return
-        except OverflowError:
-            self.print_to_window('Port number out of range')
+        connection_error = self.client.connect(port)
+        if connection_error:
+            self.print_to_window(connection_error)
             return
         self.timer.start(50)  # Start timer at 20 Hz
         self.ui.portTextField.setDisabled(True)

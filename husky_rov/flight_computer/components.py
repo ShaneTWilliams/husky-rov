@@ -1,6 +1,6 @@
 import time
 from threading import Thread
-
+from sense_hat import SenseHat
 
 class Motor:
 
@@ -66,3 +66,7 @@ class Servo:
 
     def kill_pwm(self):
         self.rov.rpi.set_servo_pulsewidth(self.pin, 0)  # hold pwm line low
+
+class SenseHat:
+    def __init__(self):
+        pass
