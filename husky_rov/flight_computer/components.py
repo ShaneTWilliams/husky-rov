@@ -1,12 +1,14 @@
 import time
 from threading import Thread
 from sense_hat import SenseHat
+import pigpio
 
 class Motor:
 
     def __init__(self, rov, pin):
         self.rov = rov
         self.pin = pin
+        self.rov.rpi.set_mode(self.pin, pigpio.OUTPUT)
         self.speed = 1500  # All speeds are PWM pulse widths, in microseconds
 
     def thrust_forward(self):
