@@ -36,6 +36,7 @@ class Servo:
         self.moving_clockwise = False
         self.moving_counterclockwise = False
         self.position = 1500
+        self.rov.rpi.set_mode(self.pin, pigpio.OUTPUT)
         self.move_to(self.position)
         self.timer = Thread(target=self.increment_position)
         self.timer.start()
