@@ -3,6 +3,7 @@ from threading import Thread
 from sense_hat import SenseHat
 import pigpio
 
+
 class Motor:
 
     def __init__(self, rov, pin):
