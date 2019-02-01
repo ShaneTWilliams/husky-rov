@@ -4,7 +4,7 @@ from threading import Thread
 from rov import ROV
 
 
-class ROVServer:
+class TCPServer:
 
     def __init__(self, ip, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -12,6 +12,7 @@ class ROVServer:
         self.rov = ROV()
         self.connections = []  # current connections to the rov
         self.listen_for_connections()
+        print('Server running on {} at port {}'.format(ip, port))
 
     # Listen for clients and instantiate a Connection object when one connects
     def listen_for_connections(self):
