@@ -66,7 +66,9 @@ class KeyParser:
                 'command': 'CAMSERVO_RIGHT',
                 'group': 'CAMSERVO_H_KEYS'
             },
+
         }
+
         # Toggle keys are one-time, they don't need to be associated with a
         # group or a "currently pressed" array.
         self.toggle_keys = {
@@ -87,8 +89,12 @@ class KeyParser:
             },
             Qt.Key_Space: {
                 'command': 'U_TOGGLE_DEPLOY'
+            },
+            Qt.Key_Enter: {
+                'command': 'TOGGLE_VIDEO_DIALOG'
             }
         }
+
         # List of commands for keys currently pressed. If no keys are pressed,
         # the "stop" commands of that group remain the only elements in the
         # array.

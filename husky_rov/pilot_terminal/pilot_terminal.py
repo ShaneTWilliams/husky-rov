@@ -1,9 +1,10 @@
 import sys
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QTimer
-from gui import Ui_MainWindow
+from pilot_terminal_gui import Ui_MainWindow
 from tcp_client import TCPClient
 from key_parsing import KeyParser
+from video import VideoDialog
 
 
 def main():
@@ -31,6 +32,9 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.client.listener.data_signal.connect(self.update_ui)
         self.timer = QTimer()  # Timer to get ROV status at random intervals
         self.timer.timeout.connect(self.get_rov_status)
+
+    def show_video_dialog(self):
+        self.video_dialog = VideoDialog()
 
     # Prints text to the control interface
     def print_to_window(self, message):
@@ -109,6 +113,8 @@ class PilotTerminal(QtWidgets.QMainWindow):
         key = event.key()
         if not event.isAutoRepeat():
             command = self.key_parser.parse_press(key)
+            if command == 'TOGGLE_VIDEO_DIALOG':
+                self.show_video_dialog()
             if command and self.client.is_connected:
                 self.client.send(command)
 

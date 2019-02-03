@@ -5,11 +5,11 @@ from components import Motor, Servo
 class ROV:
 
     def __init__(self):
+        self.rpi = pigpio.pi()  # rpi object, used for GPIO control
         self.urov = uROV(self)
         self.speed_multiplier = 3
         self.pilot_connected = False
         self.copilot_connected = False
-        self.rpi = pigpio.pi()  # rpi object, used for PWM control
         self.motor_1 = Motor(self, 18)
         self.motor_2 = Motor(self, 6)
         self.motor_3 = Motor(self, 13)
