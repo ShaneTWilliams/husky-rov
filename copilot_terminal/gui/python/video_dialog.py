@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file '..\copilot_terminal\gui\qt\video_dialog.ui'
+#
+# Created by: PyQt5 UI code generator 5.11.3
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(867, 537)
+        self.gridLayout = QtWidgets.QGridLayout(Dialog)
+        self.gridLayout.setObjectName("gridLayout")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+        self.frame_2 = QtWidgets.QFrame(Dialog)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.frame_2)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.videoLabel = QtWidgets.QLabel(self.frame_2)
+        self.videoLabel.setText("")
+        self.videoLabel.setObjectName("videoLabel")
+        self.gridLayout_2.addWidget(self.videoLabel, 0, 0, 1, 1)
+        self.frame = QtWidgets.QFrame(self.frame_2)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.frame)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.circleCount = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(48)
+        self.circleCount.setFont(font)
+        self.circleCount.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.circleCount.setStyleSheet("color:rgb(255, 0, 0)")
+        self.circleCount.setAlignment(QtCore.Qt.AlignCenter)
+        self.circleCount.setObjectName("circleCount")
+        self.gridLayout_3.addWidget(self.circleCount, 0, 0, 1, 1)
+        self.circleLabel = QtWidgets.QLabel(self.frame)
+        self.circleLabel.setText("")
+        self.circleLabel.setObjectName("circleLabel")
+        self.gridLayout_3.addWidget(self.circleLabel, 0, 1, 1, 1)
+        self.lineCount = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(48)
+        self.lineCount.setFont(font)
+        self.lineCount.setStyleSheet("color:rgb(255, 0, 0)")
+        self.lineCount.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineCount.setObjectName("lineCount")
+        self.gridLayout_3.addWidget(self.lineCount, 2, 0, 1, 1)
+        self.triangleCount = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(48)
+        self.triangleCount.setFont(font)
+        self.triangleCount.setStyleSheet("color:rgb(255, 0, 0)")
+        self.triangleCount.setAlignment(QtCore.Qt.AlignCenter)
+        self.triangleCount.setObjectName("triangleCount")
+        self.gridLayout_3.addWidget(self.triangleCount, 1, 0, 1, 1)
+        self.squareCount = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(48)
+        self.squareCount.setFont(font)
+        self.squareCount.setStyleSheet("color:rgb(255, 0, 0)")
+        self.squareCount.setAlignment(QtCore.Qt.AlignCenter)
+        self.squareCount.setObjectName("squareCount")
+        self.gridLayout_3.addWidget(self.squareCount, 3, 0, 1, 1)
+        self.squareLabel = QtWidgets.QLabel(self.frame)
+        self.squareLabel.setText("")
+        self.squareLabel.setObjectName("squareLabel")
+        self.gridLayout_3.addWidget(self.squareLabel, 3, 1, 1, 1)
+        self.lineLabel = QtWidgets.QLabel(self.frame)
+        self.lineLabel.setText("")
+        self.lineLabel.setObjectName("lineLabel")
+        self.gridLayout_3.addWidget(self.lineLabel, 2, 1, 1, 1)
+        self.triangleLabel = QtWidgets.QLabel(self.frame)
+        self.triangleLabel.setText("")
+        self.triangleLabel.setObjectName("triangleLabel")
+        self.gridLayout_3.addWidget(self.triangleLabel, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.frame, 0, 1, 1, 1)
+        self.gridLayout_2.setColumnStretch(0, 2)
+        self.gridLayout_2.setColumnStretch(1, 1)
+        self.gridLayout.addWidget(self.frame_2, 0, 0, 2, 2)
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "ROV Bottom Camera"))
+        self.circleCount.setText(_translate("Dialog", "0"))
+        self.lineCount.setText(_translate("Dialog", "0"))
+        self.triangleCount.setText(_translate("Dialog", "0"))
+        self.squareCount.setText(_translate("Dialog", "0"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+
