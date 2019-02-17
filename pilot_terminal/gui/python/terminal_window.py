@@ -12,7 +12,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(878, 546)
+        MainWindow.resize(932, 513)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("husky.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -513,7 +513,9 @@ class Ui_MainWindow(object):
         self.gridLayout_12.setColumnStretch(4, 1)
         self.gridLayout_2.addWidget(self.groupBox_2, 1, 1, 1, 1)
         self.gridLayout_2.setColumnStretch(0, 2)
+        self.gridLayout_2.setColumnStretch(1, 1)
         self.gridLayout_2.setRowStretch(0, 3)
+        self.gridLayout_2.setRowStretch(1, 1)
         self.gridLayout_2.setRowStretch(2, 2)
         self.gridLayout.addWidget(self.frame, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
