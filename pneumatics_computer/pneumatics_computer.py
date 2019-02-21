@@ -1,6 +1,6 @@
 import pickle
 import time
-from tcp_client import TCPClient
+from app.tcp_client import TCPClient
 
 
 def main():
@@ -29,7 +29,10 @@ class PneumaticsComputer:
 
     def control_loop(self):
         while True:
-            data = self.client.sock.recv(2048)
+            try:
+                data = self.client.sock.recv(2048)
+            except:
+                continue
             if not data:
                 self.client.disconnect()
                 break
