@@ -4,9 +4,6 @@ import pickle
 
 class TCPClient:
 
-    def __init__(self):
-        self.is_connected = False
-
     def connect(self, port, ip):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
@@ -23,13 +20,10 @@ class TCPClient:
             return 'Invalid IP'
         except ConnectionResetError:
             return 'Connection reset by ROV'
-        self.send(('CONNECT_CLIENT', 'PNEUMATICS'))
-        self.is_connected = True
 
     def disconnect(self):
         self.send(('DISCONNECT_CLIENT', 'PNEUMATICS'))
         self.sock.shutdown(socket.SHUT_WR)
-        self.is_connected = False
 
     def send(self, message):
         message = pickle.dumps(message)

@@ -79,6 +79,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.speedMultiplierSlider.setDisabled(False)
 
     def disconnect_from_rov(self):
+        self.client.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.client.disconnect()
         self.ui.pilotStatus.setText('Not Connected')
         self.ui.copilotStatus.setText('Not Connected')

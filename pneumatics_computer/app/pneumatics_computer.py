@@ -1,11 +1,7 @@
-import pickle
 import time
-from app.tcp_client import TCPClient
+import pickle
 
-
-def main():
-    port = input('Enter a port to connect to: ')
-    PneumaticsComputer(port)
+from tcp_client import TCPClient
 
 
 class PneumaticsComputer:
@@ -22,10 +18,11 @@ class PneumaticsComputer:
                 time.sleep(1)
                 continue
             try:
+                print('Connected!')
+                self.send(('CONNECT_CLIENT', 'PNEUMATICS'))
                 self.control_loop()
-            except KeyboardInterrupt:
-                self.client.send(('DISCONNECT_CLIENT', 'PNEUMATICS'))
-                raise KeyboardInterrupt
+            finally:
+                self.client.disconnect()
 
     def control_loop(self):
         while True:
@@ -44,7 +41,3 @@ class PneumaticsComputer:
                 pass
             else:
                 pass
-
-
-if __name__ == '__main__':
-    main()
