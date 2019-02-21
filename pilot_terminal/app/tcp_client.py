@@ -1,6 +1,5 @@
 import socket
 import pickle
-
 from PyQt5.QtCore import QThread, pyqtSignal
 
 
@@ -26,12 +25,12 @@ class TCPClient:
             return 'Invalid IP'
         except ConnectionResetError:
             return 'Connection reset by ROV'
+        except OSError:
+            return 'Host unreachable - verify network connection'
         self.listener.start()
-        self.send(('CONNECT_CLIENT', 'PILOT'))
         self.is_connected = True
 
     def disconnect(self):
-        self.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.sock.shutdown(socket.SHUT_WR)
         self.listener.quit()
         self.is_connected = False

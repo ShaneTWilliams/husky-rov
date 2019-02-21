@@ -49,6 +49,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         if connection_error:
             self.print_to_window(connection_error)
             return
+        self.client.send(('CONNECT_CLIENT', 'PILOT'))
         self.ui.pilotStatus.setDisabled(False)
         self.ui.copilotStatus.setDisabled(False)
         self.ui.pneumaticsStatus.setDisabled(False)
