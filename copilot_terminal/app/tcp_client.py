@@ -52,11 +52,14 @@ class ListenerThread(QThread):
     def run(self):
         while True:
             try:
-                data = self.client.sock.recv(8192)
+                data = self.client.sock.recv(2048)
             except:
                 continue
             if not data:
                 self.client.sock.close()
                 break
-            data = pickle.loads(data)
+            try:
+                data = pickle.loads(data)
+            except:
+                continue
             self.data_signal.emit(data)

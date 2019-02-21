@@ -38,7 +38,7 @@ class PneumaticsComputer:
                 break
             try:
                 data = pickle.loads(data)
-            except pickle.UnpicklingError:
+            except:
                 continue
             if data['claw']['claw_closed']:
                 pass
