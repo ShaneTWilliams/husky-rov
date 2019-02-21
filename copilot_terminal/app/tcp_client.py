@@ -51,7 +51,7 @@ class ListenerThread(QThread):
 
     def run(self):
         while True:
-            data = self.client.sock.recv(2048)
+            data = self.client.sock.recv(8192)
             if not data:
                 self.client.sock.close()
                 break
