@@ -183,6 +183,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
 
     def keyPressEvent(self, event):
         key = event.key()
+        print(key)
         if not event.isAutoRepeat():
             if key == QtCore.Qt.Key_Enter:
                 self.show_video_dialog()
