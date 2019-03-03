@@ -109,6 +109,7 @@ class Servo:
 
 
 class Relay:
+
     def __init__(self, rpi, pin):
         self.rpi = rpi
         self.pin = pin
@@ -124,26 +125,36 @@ class Relay:
 
 
 class SenseHat(SenseHat):
+
     def __init__(self):
         super().__init__()
 
-    def read_all_sensors(self):
+    def get_can_temp_1(self):
+        return round(self.get_temperature_from_humidity(), 2)
+
+    def get_can_temp_2(self):
+        return round(self.get_temperature_from_pressure(), 2)
+
+    def get_can_humidity(self):
+        return round(self.get_humidity(), 2)
+
+    def get_can_pressure(self):
+        return round(self.get_pressure(), 2)
+
+    def get_pitch(self):
         orientation = self.get_orientation()
         pitch = orientation['pitch']
         if pitch > 0 and pitch < 90:
             pitch *= -1
         else:
             pitch = -1 * (pitch - 360)
+        return round(pitch, 2)
+
+    def get_roll(self):
+        orientation = self.get_orientation()
         roll = orientation['roll']
         roll = -1 * (roll - 180)
-        return {
-            'can_temperature_1': round(self.get_temperature_from_humidity(), 2),
-            'can_temperature_2': round(self.get_temperature_from_pressure(), 2),
-            'can_humidity': round(self.get_humidity(), 2),
-            'can_pressure': round(self.get_pressure(), 2),
-            'pitch': round(pitch, 2),
-            'roll': round(roll, 2)
-        }
+        return round(roll, 2)
 
 
 class WaterTempSensor:
@@ -151,8 +162,12 @@ class WaterTempSensor:
         os.system('modprobe w1-gpio')
         os.system('modprobe w1-therm')
         base_dir = '/sys/bus/w1/devices/'
-        device_folder = glob.glob(base_dir + '28*')[0]
-        self.device_file = device_folder + '/w1_slave'
+        try:
+            device_folder = glob.glob(base_dir + '28*')[0]
+            self.device_file = device_folder + '/w1_slave'
+            self.is_connected = True
+        except IndexError:
+            self.is_connected = False
 
     def read_temp_raw(self):
         f = open(self.device_file, 'r')
@@ -161,6 +176,8 @@ class WaterTempSensor:
         return lines
 
     def read_temp(self):
+        if not self.is_connected:
+            return '---'
         lines = self.read_temp_raw()
         if lines[0].strip()[-3:] == 'YES':
             equals_pos = lines[1].find('t=')

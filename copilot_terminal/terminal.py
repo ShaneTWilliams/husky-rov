@@ -168,21 +168,22 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
             self.ui.clawStatus.setText('Open')
             self.ui.clawStatus.setStyleSheet('color:rgb(0, 180, 0)')
         self.ui.canTemp1Value.setText(
-            str(telemetry['sensor_data']['can_temperature_1'])
+            str(telemetry['sensors']['can_temperature_1'])
         )
         self.ui.canTemp2Value.setText(
-            str(telemetry['sensor_data']['can_temperature_2'])
+            str(telemetry['sensors']['can_temperature_2'])
         )
         self.ui.humidityValue.setText(
-            str(telemetry['sensor_data']['can_humidity'])
+            str(telemetry['sensors']['can_humidity'])
         )
         self.ui.pressureValue.setText(
-            str(telemetry['sensor_data']['can_pressure'])
+            str(telemetry['sensors']['can_pressure'])
         )
-        self.ui.pitchValue.setText(str(telemetry['sensor_data']['pitch']))
-        self.ui.pitchSlider.setValue(telemetry['sensor_data']['pitch'])
-        self.ui.rollValue.setText(str(telemetry['sensor_data']['roll']))
-        self.ui.rollSlider.setValue(telemetry['sensor_data']['roll'])
+        self.ui.pitchValue.setText(str(telemetry['sensors']['pitch']))
+        self.ui.pitchSlider.setValue(telemetry['sensors']['pitch'])
+        self.ui.rollValue.setText(str(telemetry['sensors']['roll']))
+        self.ui.rollSlider.setValue(telemetry['sensors']['roll'])
+        self.ui.waterTempValue.setText(telemetry['sensors']['water_temp'])
 
     def keyPressEvent(self, event):
         key = event.key()

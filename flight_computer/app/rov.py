@@ -3,8 +3,9 @@ import time
 
 import pigpio
 
-from tcp_server import TCPServer
-from components import MicroROV, Claw, Motor, Servo, SenseHat
+from app.tcp_server import TCPServer
+from app.components import (MicroROV, Claw, Motor, Servo, SenseHat,
+                            WaterTempSensor)
 
 
 class ROV:
@@ -21,7 +22,7 @@ class ROV:
         self.pilot_connected = False
         self.copilot_connected = False
         self.pneumatics_connected = False
-        self.motor_1 = Motor(self, 18)
+        self.motor_1 = Motor(self, 17)
         self.motor_2 = Motor(self, 6)
         self.motor_3 = Motor(self, 13)
         self.motor_4 = Motor(self, 19)
@@ -30,6 +31,7 @@ class ROV:
         self.camera_servo = Servo(self.rpi, 20, (1000, 1800))
         self.claw = Claw(self.rpi, 21, (1000, 1800))
         self.sense_hat = SenseHat()
+        self.water_temp_sensor = WaterTempSensor()
 
     def stream_telemetry(self):
         while True:
@@ -90,7 +92,15 @@ class ROV:
                 'claw_servo_position': self.claw.servo.position,
                 'claw_closed': self.claw.is_closed,
             },
-            'sensor_data': self.sense_hat.read_all_sensors()
+            'sensors': {
+                'can_temperature_1': self.sense_hat.get_can_temp_1(),
+                'can_temperature_2': self.sense_hat.get_can_temp_1(),
+                'can_pressure': self.sense_hat.get_can_pressure(),
+                'can_humidity': self.sense_hat.get_can_humidity(),
+                'pitch': self.sense_hat.get_pitch(),
+                'roll': self.sense_hat.get_roll(),
+                'water_temp': self.water_temp_sensor.read_temp()
+            }
         }
 
     def move_horizontal(self, action):
