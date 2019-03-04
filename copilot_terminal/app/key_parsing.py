@@ -82,6 +82,9 @@ class KeyParser:
             Qt.Key_Space: {
                 'command': 'TOGGLE_CLAW'
             },
+            Qt.Key_Delete: {
+                'command': 'TOGGLE_AIR'
+            }
         }
         # List of commands for keys currently pressed. If no keys are pressed,
         # the "stop" command of that group remains the only elements in the

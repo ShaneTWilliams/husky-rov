@@ -6,6 +6,7 @@ from gui.python.terminal_window import Ui_MainWindow
 from app.tcp_client import TCPClient
 from app.key_parsing import KeyParser
 from app.video import VideoDialog
+from app.calculator import CalculatorDialog
 
 
 def main():
@@ -43,6 +44,10 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         self.video_dialog.key_press_signal.connect(self.keyReleaseEvent)
         self.video_dialog.show()
 
+    def show_calculator_dialog(self):
+        self.calculator_dialog = CalculatorDialog()
+        self.calculator_dialog.show()
+
     # Prints text to the control interface
     def print_to_window(self, message):
         self.ui.textBrowser.append(message)
@@ -63,6 +68,7 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         self.ui.connectButton.setDisabled(True)
         self.ui.disconnectButton.setDisabled(False)
         self.ui.clawStatus.setDisabled(False)
+        self.ui.airStatus.setDisabled(False)
         self.ui.motor1Slider.setDisabled(False)
         self.ui.motor2Slider.setDisabled(False)
         self.ui.motor3Slider.setDisabled(False)
@@ -99,7 +105,7 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         self.ui.connectButton.setDisabled(False)
         self.ui.disconnectButton.setDisabled(True)
         self.ui.clawStatus.setDisabled(True)
-        self.ui.clawStatus.setText('---')
+        self.ui.airStatus.setDisabled(True)
         self.ui.clawStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.motor1Slider.setDisabled(True)
         self.ui.motor2Slider.setDisabled(True)
@@ -167,6 +173,12 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         else:
             self.ui.clawStatus.setText('Open')
             self.ui.clawStatus.setStyleSheet('color:rgb(0, 180, 0)')
+        if telemetry['air_open']:
+            self.ui.airStatus.setText('Open')
+            self.ui.airStatus.setStyleSheet('color:rgb(180, 0, 0)')
+        else:
+            self.ui.airStatus.setText('Closed')
+            self.ui.airStatus.setStyleSheet('color:rgb(0, 180, 0)')
         self.ui.canTemp1Value.setText(
             str(telemetry['sensors']['can_temperature_1'])
         )
@@ -188,8 +200,10 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
         key = event.key()
         if not event.isAutoRepeat():
-            if key == QtCore.Qt.Key_Enter:
+            if key == QtCore.Qt.Key_Return:
                 self.show_video_dialog()
+            elif key == QtCore.Qt.Key_Shift:
+                self.show_calculator_dialog()
             command = self.key_parser.parse_press(key)
             if command and self.client.is_connected:
                 self.client.send(command)

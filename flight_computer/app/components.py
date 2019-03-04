@@ -25,10 +25,7 @@ class Claw:
         self.is_closed = False
 
     def actuate(self):
-        if self.is_closed:
-            self.is_closed = False
-        else:
-            self.is_closed = True
+        self.is_closed = not self.is_closed
 
 
 class Motor:
@@ -142,18 +139,19 @@ class SenseHat(SenseHat):
         return round(self.get_pressure(), 2)
 
     def get_pitch(self):
-        orientation = self.get_orientation()
-        pitch = orientation['pitch']
-        if pitch > 0 and pitch < 90:
+        pitch = self.get_orientation()['pitch']
+        if pitch < 90:
             pitch *= -1
         else:
-            pitch = -1 * (pitch - 360)
+            pitch = (pitch-360)*-1
         return round(pitch, 2)
 
     def get_roll(self):
-        orientation = self.get_orientation()
-        roll = orientation['roll']
-        roll = -1 * (roll - 180)
+        roll = self.get_orientation()['roll']
+        if roll < 90:
+            roll *= -1
+        else:
+            roll = (roll-360)*-1
         return round(roll, 2)
 
 

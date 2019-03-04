@@ -18,7 +18,7 @@ class VideoDialog(QtWidgets.QDialog):
         self.processor.start()
 
     def update_video(self, frame):
-        frame = frame.scaledToWidth(500)
+        frame = frame.scaledToWidth(1000)
         self.ui.videoLabel.setPixmap(frame)
 
     def keyPressEvent(self, event):

@@ -59,7 +59,7 @@ class KeyParser:
             Qt.Key_Right: {
                 'command': ('MOVE_CLAW_SERVO', 'CW'),
                 'group': 'claw_servo_keys'
-            },
+            }
         }
         # Toggle keys are one-time, they don't need to be associated with a
         # group or a "currently pressed" array.
@@ -82,6 +82,9 @@ class KeyParser:
             Qt.Key_Space: {
                 'command': 'TOGGLE_CLAW'
             },
+            Qt.Key_Delete: {
+                'command': 'TOGGLE_AIR'
+            }
         }
         # List of commands for keys currently pressed. If no keys are pressed,
         # the "stop" command of that group remains the only elements in the

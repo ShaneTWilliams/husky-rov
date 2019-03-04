@@ -31,7 +31,7 @@ class VideoDialog(QtWidgets.QDialog):
         self.processor.start()
 
     def update_video(self, frame):
-        frame = frame.scaledToWidth(500)
+        frame = frame.scaledToWidth(1000)
         self.ui.videoLabel.setPixmap(frame)
 
     def update_shape_count(self, shapes):
@@ -43,7 +43,7 @@ class VideoDialog(QtWidgets.QDialog):
     def keyPressEvent(self, event):
         key = event.key()
         if not event.isAutoRepeat():
-            if key == Qt.Key_Enter:
+            if key == Qt.Key_Return:
                 self.processor.source.release()
                 self.processor.terminate()
                 self.close()

@@ -32,6 +32,7 @@ class ROV:
         self.claw = Claw(self.rpi, 21, (1000, 1800))
         self.sense_hat = SenseHat()
         self.water_temp_sensor = WaterTempSensor()
+        self.air_open = False
 
     def stream_telemetry(self):
         while True:
@@ -51,7 +52,8 @@ class ROV:
             'DISCONNECT_CLIENT': self.disconnect_client,
             'MOVE_CAMERA_SERVO': self.camera_servo.move,
             'MOVE_CLAW_SERVO': self.claw.servo.move,
-            'TOGGLE_CLAW': self.claw.actuate
+            'TOGGLE_CLAW': self.claw.actuate,
+            'TOGGLE_AIR': self.toggle_air
         }
         telemetry_streamer = threading.Thread(target=self.stream_telemetry)
         telemetry_streamer.start()
@@ -92,6 +94,7 @@ class ROV:
                 'claw_servo_position': self.claw.servo.position,
                 'claw_closed': self.claw.is_closed,
             },
+            'air_open': self.air_open,
             'sensors': {
                 'can_temperature_1': self.sense_hat.get_can_temp_1(),
                 'can_temperature_2': self.sense_hat.get_can_temp_1(),
@@ -153,6 +156,9 @@ class ROV:
 
     def set_speed_multiplier(self, value):
         self.speed_multiplier = value
+
+    def toggle_air(self):
+        self.air_open = not self.air_open
 
     def shut_down(self):
         self.move_horizontal('STOP')

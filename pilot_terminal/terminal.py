@@ -184,7 +184,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
         key = event.key()
         if not event.isAutoRepeat():
-            if key == QtCore.Qt.Key_Enter:
+            if key == QtCore.Qt.Key_Return:
                 self.show_video_dialog()
             command = self.key_parser.parse_press(key)
             if command and self.client.is_connected:
