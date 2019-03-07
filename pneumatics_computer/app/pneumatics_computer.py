@@ -1,7 +1,7 @@
 import time
 import pickle
 
-from tcp_client import TCPClient
+from app.tcp_client import TCPClient
 
 
 class PneumaticsComputer:
