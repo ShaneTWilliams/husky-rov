@@ -89,7 +89,7 @@ class VideoProcessor(QThread):
                     side_ratio = height / width
                 else:
                     side_ratio = width / height
-                if side_ratio > 4 and side_ratio < 10:
+                if (side_ratio > 4 and side_ratio < 10) or num_sides == 2:
                     shapes['lines'] += 1
                     continue
                 elif num_sides == 3:
