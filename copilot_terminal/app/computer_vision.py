@@ -14,18 +14,21 @@ class VideoProcessor(QThread):
         self.threshold = 80
         self.arc_coefficient = 0.035
         self.show_binary_video = False
+        self.is_running = False
 
     def run(self):
+        self.is_running = True
         while True:
-            raw_frame = self.grab_frame()
-            binary_frame, contours = self.make_binary(raw_frame)
-            shape_count = self.find_shapes(contours)
-            self.shape_signal.emit(shape_count)
-            if self.show_binary_video:
-                frame = self.convert_to_qpixmap(binary_frame)
-            else:
-                frame = self.convert_to_qpixmap(raw_frame)
-            self.video_signal.emit(frame)
+            if self.is_running:
+                raw_frame = self.grab_frame()
+                binary_frame, contours = self.make_binary(raw_frame)
+                shape_count = self.find_shapes(contours)
+                self.shape_signal.emit(shape_count)
+                if self.show_binary_video:
+                    frame = self.convert_to_qpixmap(binary_frame)
+                else:
+                    frame = self.convert_to_qpixmap(raw_frame)
+                self.video_signal.emit(frame)
 
     def grab_frame(self):
         img_valid, frame = self.source.read()
@@ -72,15 +75,23 @@ class VideoProcessor(QThread):
         }
         for contour in contours:
             arc_length = cv2.arcLength(contour, True)
-            if arc_length > 100 and arc_length < 300:
+            if arc_length > 100 and arc_length < 500:
                 sides = cv2.approxPolyDP(
                     contour,
                     self.arc_coefficient*arc_length,
                     True
                 )
                 num_sides = len(sides)
-                if num_sides == 2:
+                bounding_rect = cv2.minAreaRect(contour)
+                width = bounding_rect[1][0]
+                height = bounding_rect[1][1]
+                if height > width:
+                    side_ratio = height / width
+                else:
+                    side_ratio = width / height
+                if side_ratio > 4 and side_ratio < 10:
                     shapes['lines'] += 1
+                    continue
                 elif num_sides == 3:
                     shapes['triangles'] += 1
                 elif num_sides == 4:
