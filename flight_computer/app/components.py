@@ -10,7 +10,7 @@ import pigpio
 class MicroROV:
 
     def __init__(self, rpi):
-        self.relay = Relay(rpi, 17)
+        self.relay = Relay(rpi, 16)
 
     def move(self, action):
         if action == 'FORWARD':
@@ -20,6 +20,7 @@ class MicroROV:
 
 
 class Claw:
+
     def __init__(self, rpi, servo_pin, servo_bounds):
         self.servo = Servo(rpi, servo_pin, servo_bounds)
         self.is_closed = False
@@ -156,6 +157,7 @@ class SenseHat(SenseHat):
 
 
 class WaterTempSensor:
+
     def __init__(self):
         os.system('modprobe w1-gpio')
         os.system('modprobe w1-therm')
