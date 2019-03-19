@@ -44,6 +44,10 @@ class KeyParser:
                 'command': ('MOVE_MICRO_ROV', 'FORWARD'),
                 'group': 'micro_rov_keys'
             },
+            Qt.Key_PageDown: {
+                'command': ('MOVE_MICRO_ROV', 'BACKWARD'),
+                'group': 'micro_rov_keys'
+            },
             Qt.Key_Up: {
                 'command': ('MOVE_CAMERA_SERVO', 'CCW'),
                 'group': 'cam_servo_keys'

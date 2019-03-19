@@ -14,7 +14,6 @@ class PneumaticsComputer:
         while True:
             error = self.client.connect(self.port, '192.168.2.99')
             if error:
-                print(error)
                 time.sleep(1)
                 continue
             try:

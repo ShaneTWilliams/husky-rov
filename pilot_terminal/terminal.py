@@ -58,6 +58,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.connectButton.setDisabled(True)
         self.ui.disconnectButton.setDisabled(False)
         self.ui.clawStatus.setDisabled(False)
+        self.ui.airStatus.setDisabled(False)
         self.ui.motor1Slider.setDisabled(False)
         self.ui.motor2Slider.setDisabled(False)
         self.ui.motor3Slider.setDisabled(False)
@@ -79,14 +80,14 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.speedMultiplierSlider.setDisabled(False)
 
     def disconnect_from_rov(self):
+        self.ui.copilotStatus.setStyleSheet('color:rgb(180, 0, 0)')
+        self.ui.copilotStatus.setText('Not Connected')
         self.client.send(('DISCONNECT_CLIENT', 'PILOT'))
         self.client.disconnect()
-        self.ui.pilotStatus.setText('Not Connected')
-        self.ui.copilotStatus.setText('Not Connected')
-        self.ui.pneumaticsStatus.setText('Not Connected')
         self.ui.pilotStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.copilotStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.pneumaticsStatus.setStyleSheet('color:rgb(0, 0, 0)')
+        self.ui.airStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.pilotStatus.setDisabled(True)
         self.ui.copilotStatus.setDisabled(True)
         self.ui.pneumaticsStatus.setDisabled(True)
@@ -95,7 +96,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.connectButton.setDisabled(False)
         self.ui.disconnectButton.setDisabled(True)
         self.ui.clawStatus.setDisabled(True)
-        self.ui.clawStatus.setText('---')
+        self.ui.airStatus.setDisabled(True)
         self.ui.clawStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.motor1Slider.setDisabled(True)
         self.ui.motor2Slider.setDisabled(True)
@@ -128,7 +129,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.motor5Slider.setValue(telemetry['motors']['motor_5_speed'])
         self.ui.motor6Slider.setValue(telemetry['motors']['motor_6_speed'])
         self.ui.microMotorSlider.setValue(
-            telemetry['motors']['micro_motor_state']
+            telemetry['motors']['micro_rov_speed']
         )
         self.ui.cameraServoSlider.setValue(
             telemetry['camera']['camera_servo_position']
@@ -163,6 +164,12 @@ class PilotTerminal(QtWidgets.QMainWindow):
         else:
             self.ui.clawStatus.setText('Open')
             self.ui.clawStatus.setStyleSheet('color:rgb(0, 180, 0)')
+        if telemetry['air_open']:
+            self.ui.airStatus.setText('Open')
+            self.ui.airStatus.setStyleSheet('color:rgb(180, 0, 0)')
+        else:
+            self.ui.airStatus.setText('Closed')
+            self.ui.airStatus.setStyleSheet('color:rgb(0, 180, 0)')
         self.ui.canTemp1Value.setText(
             str(telemetry['sensors']['can_temperature_1'])
         )
@@ -183,7 +190,6 @@ class PilotTerminal(QtWidgets.QMainWindow):
 
     def keyPressEvent(self, event):
         key = event.key()
-        print(key)
         if not event.isAutoRepeat():
             if key == QtCore.Qt.Key_Return:
                 self.show_video_dialog()

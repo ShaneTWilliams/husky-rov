@@ -11,11 +11,14 @@ from app.components import (MicroROV, Claw, Motor, Servo, SenseHat,
 class ROV:
 
     def __init__(self, ip, port):
+
         self.server = TCPServer(ip, port)
         self.init_hardware()
+        print("ROV successfully initialized")
         self.control_loop()
 
     def init_hardware(self):
+        self.sense_hat = SenseHat()
         self.rpi = pigpio.pi()  # rpi object, used for GPIO control
         self.micro_rov = MicroROV(self.rpi)
         self.speed_multiplier = 3
@@ -30,7 +33,6 @@ class ROV:
         self.motor_6 = Motor(self, 6)
         self.camera_servo = Servo(self.rpi, 13, (1200, 1800))
         self.claw = Claw(self.rpi, 12, (1200, 1800))
-        self.sense_hat = SenseHat()
         self.water_temp_sensor = WaterTempSensor()
         self.air_open = False
 
@@ -41,6 +43,8 @@ class ROV:
 
     def control_loop(self):
         # Possible commands to be interpreted and their associated functions
+        telemetry_streamer = threading.Thread(target=self.stream_telemetry)
+        telemetry_streamer.start()
         self.commands = {
             'MOVE_HORIZONTAL': self.move_horizontal,
             'MOVE_VERTICAL': self.move_vertical,
@@ -55,9 +59,14 @@ class ROV:
             'TOGGLE_CLAW': self.claw.actuate,
             'TOGGLE_AIR': self.toggle_air
         }
-        telemetry_streamer = threading.Thread(target=self.stream_telemetry)
-        telemetry_streamer.start()
         while True:
+            if self.pilot_connected and self.copilot_connected:
+                if self.sense_hat.color != (0, 255, 0):
+                    self.sense_hat.set_led(False, (0, 255, 0))
+            else:
+                if self.sense_hat.color != (255, 150, 0):
+                    self.sense_hat.set_led(True, (255, 150, 0))
+                    
             command = self.server.queued_commands.get()
             if command != 'REQUEST_TELEMETRY':
                 print(command)
@@ -79,7 +88,7 @@ class ROV:
                 'motor_4_speed': self.motor_4.speed,
                 'motor_5_speed': self.motor_5.speed,
                 'motor_6_speed': self.motor_6.speed,
-                'micro_motor_state': self.micro_rov.relay.is_on,
+                'micro_rov_speed': self.micro_rov.speed,
                 'speed_multiplier': self.speed_multiplier
             },
             'network': {

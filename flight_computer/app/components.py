@@ -10,14 +10,23 @@ import pigpio
 class MicroROV:
 
     def __init__(self, rpi):
-        self.relay = Relay(rpi, 16)
+        self.relay_1 = Relay(rpi, 13)
+        self.relay_2 = Relay(rpi, 16)
+        self.speed = 0
 
     def move(self, action):
         if action == 'FORWARD':
-            self.relay.turn_on()
+            self.relay_1.turn_on()
+            self.relay_2.turn_off()
+            self.speed = 1
+        elif action == 'BACKWARD':
+            self.relay_1.turn_off()
+            self.relay_2.turn_on()
+            self.speed = -1
         elif action == 'STOP':
-            self.relay.turn_off()
-
+            self.relay_1.turn_off()
+            self.relay_2.turn_off()
+            self.speed = 0
 
 class Claw:
 
@@ -126,6 +135,25 @@ class SenseHat(SenseHat):
 
     def __init__(self):
         super().__init__()
+        self.set_led(False, (255, 0, 0))
+        self.blinker = Thread(target=self.blink_led)
+        self.blinker.start()
+
+    def set_led(self, blinking, color):
+        self.color = color
+        if blinking:
+            self.led_blinking = True
+        else:
+            self.led_blinking = False
+
+    def blink_led(self):
+        while True:
+            self.clear(self.color)
+            time.sleep(.5)
+            if self.led_blinking:
+                self.clear((0, 0, 0))
+            time.sleep(.5)
+
 
     def get_can_temp_1(self):
         return round(self.get_temperature_from_humidity(), 2)

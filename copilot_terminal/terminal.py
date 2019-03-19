@@ -97,6 +97,7 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         self.ui.pilotStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.copilotStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.pneumaticsStatus.setStyleSheet('color:rgb(0, 0, 0)')
+        self.ui.airStatus.setStyleSheet('color:rgb(0, 0, 0)')
         self.ui.pilotStatus.setDisabled(True)
         self.ui.copilotStatus.setDisabled(True)
         self.ui.pneumaticsStatus.setDisabled(True)
@@ -138,7 +139,7 @@ class CoPilotTerminal(QtWidgets.QMainWindow):
         self.ui.motor5Slider.setValue(telemetry['motors']['motor_5_speed'])
         self.ui.motor6Slider.setValue(telemetry['motors']['motor_6_speed'])
         self.ui.microMotorSlider.setValue(
-            telemetry['motors']['micro_motor_state']
+            telemetry['motors']['micro_rov_speed']
         )
         self.ui.cameraServoSlider.setValue(
             telemetry['camera']['camera_servo_position']
