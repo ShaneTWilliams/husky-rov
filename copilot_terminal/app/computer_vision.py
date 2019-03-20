@@ -43,7 +43,7 @@ class VideoProcessor(QThread):
             255,
             cv2.THRESH_BINARY
         )
-        frame, contours, h = cv2.findContours(
+        contours, h = cv2.findContours(
             frame,
             cv2.RETR_LIST,
             cv2.CHAIN_APPROX_SIMPLE
