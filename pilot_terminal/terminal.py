@@ -186,7 +186,7 @@ class PilotTerminal(QtWidgets.QMainWindow):
         self.ui.pitchSlider.setValue(telemetry['sensors']['pitch'])
         self.ui.rollValue.setText(str(telemetry['sensors']['roll']))
         self.ui.rollSlider.setValue(telemetry['sensors']['roll'])
-        self.ui.waterTempValue.setText(telemetry['sensors']['water_temp'])
+        self.ui.waterTempValue.setText(str(telemetry['sensors']['water_temp']))
 
     def keyPressEvent(self, event):
         key = event.key()

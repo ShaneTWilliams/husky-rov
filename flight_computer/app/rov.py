@@ -29,10 +29,10 @@ class ROV:
         self.motor_2 = Motor(self, 18)
         self.motor_3 = Motor(self, 27)
         self.motor_4 = Motor(self, 22)
-        self.motor_5 = Motor(self, 5)
-        self.motor_6 = Motor(self, 6)
-        self.camera_servo = Servo(self.rpi, 13, (1200, 1800))
-        self.claw = Claw(self.rpi, 12, (1200, 1800))
+        self.motor_5 = Motor(self, 23)
+        self.motor_6 = Motor(self, 24)
+        self.camera_servo = Servo(self.rpi, 5, (600, 2200))
+        self.claw = Claw(self.rpi, 6, (1000, 2000))
         self.water_temp_sensor = WaterTempSensor()
         self.air_open = False
 
@@ -62,11 +62,11 @@ class ROV:
         while True:
             if self.pilot_connected and self.copilot_connected:
                 if self.sense_hat.color != (0, 255, 0):
-                    self.sense_hat.set_led(False, (0, 255, 0))
+                    self.sense_hat.set_led(True, (0, 255, 0))
             else:
                 if self.sense_hat.color != (255, 150, 0):
                     self.sense_hat.set_led(True, (255, 150, 0))
-                    
+
             command = self.server.queued_commands.get()
             if command != 'REQUEST_TELEMETRY':
                 print(command)
@@ -117,25 +117,25 @@ class ROV:
 
     def move_horizontal(self, action):
         if action == 'FORWARD':
-            self.motor_1.thrust_forward()
-            self.motor_2.thrust_forward()
+            self.motor_1.thrust_backward()
+            self.motor_2.thrust_backward()
             self.motor_3.thrust_forward()
             self.motor_4.thrust_forward()
         elif action == 'BACKWARD':
-            self.motor_1.thrust_backward()
-            self.motor_2.thrust_backward()
+            self.motor_1.thrust_forward()
+            self.motor_2.thrust_forward()
             self.motor_3.thrust_backward()
             self.motor_4.thrust_backward()
         elif action == 'STRAFE_LEFT':
-            self.motor_1.thrust_backward()
-            self.motor_2.thrust_forward()
-            self.motor_3.thrust_forward()
-            self.motor_4.thrust_forward()
-        elif action == 'STRAFE_RIGHT':
             self.motor_1.thrust_forward()
             self.motor_2.thrust_backward()
-            self.motor_3.thrust_backward()
+            self.motor_3.thrust_forward()
             self.motor_4.thrust_backward()
+        elif action == 'STRAFE_RIGHT':
+            self.motor_1.thrust_backward()
+            self.motor_2.thrust_forward()
+            self.motor_3.thrust_backward()
+            self.motor_4.thrust_forward()
         elif action == 'SPIN_LEFT':
             self.motor_1.thrust_forward()
             self.motor_2.thrust_backward()
@@ -154,10 +154,10 @@ class ROV:
 
     def move_vertical(self, action):
         if action == 'UP':
-            self.motor_5.thrust_forward()
+            self.motor_5.thrust_backward()
             self.motor_6.thrust_forward()
         elif action == 'DOWN':
-            self.motor_5.thrust_backward()
+            self.motor_5.thrust_forward()
             self.motor_6.thrust_backward()
         elif action == 'STOP':
             self.motor_5.thrust_stop()
