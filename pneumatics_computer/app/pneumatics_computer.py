@@ -1,5 +1,6 @@
 import time
 import pickle
+import pigpio
 
 from app.tcp_client import TCPClient
 
@@ -8,6 +9,7 @@ class PneumaticsComputer:
     def __init__(self, port):
         self.client = TCPClient()
         self.port = port
+        self.pi = pigpio.pi()
         self.connect_loop()
 
     def connect_loop(self):
@@ -15,10 +17,11 @@ class PneumaticsComputer:
             error = self.client.connect(self.port, '192.168.2.99')
             if error:
                 time.sleep(1)
+                print('ici')
                 continue
             try:
                 print('Connected!')
-                self.send(('CONNECT_CLIENT', 'PNEUMATICS'))
+                self.client.send(('CONNECT_CLIENT', 'PNEUMATICS'))
                 self.control_loop()
             finally:
                 self.client.disconnect()
@@ -37,6 +40,14 @@ class PneumaticsComputer:
             except:
                 continue
             if data['claw']['claw_closed']:
-                pass
+                self.pi.write(27, True)
+                print('closed')
             else:
-                pass
+                self.pi.write(27, False)
+                print('open')
+            if data['air_open']:
+                self.pi.write(13, True)
+                print('air open')
+            else:
+                self.pi.write(13, False)
+                print('air closed')
