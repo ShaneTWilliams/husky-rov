@@ -961,10 +961,10 @@
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="minimum">
-             <number>1000</number>
+             <number>600</number>
             </property>
             <property name="maximum">
-             <number>1800</number>
+             <number>2400</number>
             </property>
             <property name="pageStep">
              <number>10</number>
@@ -976,7 +976,7 @@
              <enum>QSlider::TicksAbove</enum>
             </property>
             <property name="tickInterval">
-             <number>200</number>
+             <number>400</number>
             </property>
            </widget>
           </item>

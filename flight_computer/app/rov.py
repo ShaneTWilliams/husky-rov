@@ -32,7 +32,7 @@ class ROV:
         self.motor_5 = Motor(self, 23)
         self.motor_6 = Motor(self, 24)
         self.camera_servo = Servo(self.rpi, 5, (600, 2200))
-        self.claw = Claw(self.rpi, 6, (1000, 2000))
+        self.claw = Claw(self.rpi, 20, (600, 2400))
         self.water_temp_sensor = WaterTempSensor()
         self.air_open = False
 
@@ -111,7 +111,7 @@ class ROV:
                 'can_humidity': self.sense_hat.get_can_humidity(),
                 'pitch': self.sense_hat.get_pitch(),
                 'roll': self.sense_hat.get_roll(),
-                'water_temp': self.water_temp_sensor.read_temp()
+                'water_temp': self.water_temp_sensor.temp
             }
         }
 
