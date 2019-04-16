@@ -190,12 +190,15 @@ class WaterTempSensor:
         os.system('modprobe w1-gpio')
         os.system('modprobe w1-therm')
         base_dir = '/sys/bus/w1/devices/'
+        self.temp = 0
         try:
             device_folder = glob.glob(base_dir + '28*')[0]
             self.device_file = device_folder + '/w1_slave'
             self.is_connected = True
         except IndexError:
             self.is_connected = False
+            self.read_thread = Thread(target=self.read_temp)
+            self.read_thread.start()
 
     def read_temp_raw(self):
         f = open(self.device_file, 'r')
@@ -204,13 +207,16 @@ class WaterTempSensor:
         return lines
 
     def read_temp(self):
-        if not self.is_connected:
-            return '---'
-        lines = self.read_temp_raw()
-        if lines[0].strip()[-3:] == 'YES':
-            equals_pos = lines[1].find('t=')
-            if equals_pos != -1:
-                temp_string = lines[1][equals_pos+2:]
-                temp_c = float(temp_string) / 1000.0
-                return round(temp_c, 2)
-        return
+        while True:
+            time.sleep(1)
+            if not self.is_connected:
+                self.temp = '---'
+                print('yo')
+                continue
+            lines = self.read_temp_raw()
+            if lines[0].strip()[-3:] == 'YES':
+                equals_pos = lines[1].find('t=')
+                if equals_pos != -1:
+                    temp_string = lines[1][equals_pos+2:]
+                    temp_c = float(temp_string) / 1000.0
+                    self.temp = round(temp_c, 2)
