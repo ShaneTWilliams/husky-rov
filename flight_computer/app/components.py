@@ -197,8 +197,8 @@ class WaterTempSensor:
             self.is_connected = True
         except IndexError:
             self.is_connected = False
-            self.read_thread = Thread(target=self.read_temp)
-            self.read_thread.start()
+        self.read_thread = Thread(target=self.read_temp)
+        self.read_thread.start()
 
     def read_temp_raw(self):
         f = open(self.device_file, 'r')
@@ -211,7 +211,6 @@ class WaterTempSensor:
             time.sleep(1)
             if not self.is_connected:
                 self.temp = '---'
-                print('yo')
                 continue
             lines = self.read_temp_raw()
             if lines[0].strip()[-3:] == 'YES':
