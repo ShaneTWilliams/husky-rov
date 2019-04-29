@@ -46,8 +46,8 @@ class PneumaticsComputer:
                 self.pi.write(22, False)
                 print('open')
             if data['air_open']:
-                self.pi.write(3, True)
+                self.pi.write(7, True)
                 print('air open')
             else:
-                self.pi.write(3, False)
+                self.pi.write(7, False)
                 print('air closed')
