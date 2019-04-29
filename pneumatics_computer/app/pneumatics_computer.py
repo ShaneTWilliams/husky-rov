@@ -40,14 +40,14 @@ class PneumaticsComputer:
             except:
                 continue
             if data['claw']['claw_closed']:
-                self.pi.write(27, True)
+                self.pi.write(22, True)
                 print('closed')
             else:
-                self.pi.write(27, False)
+                self.pi.write(22, False)
                 print('open')
             if data['air_open']:
-                self.pi.write(13, True)
+                self.pi.write(3, True)
                 print('air open')
             else:
-                self.pi.write(13, False)
+                self.pi.write(3, False)
                 print('air closed')
